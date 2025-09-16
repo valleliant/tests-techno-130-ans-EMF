@@ -17,3 +17,22 @@ model Question {
   
   @@map("questions")
 }
+
+model Lock {
+  id           Int       @id @default(1)
+  isOpen       Boolean   @default(true)
+  holderIp     String?   // IP qui détient le lock
+  acquiredAt   DateTime? // quand le lock a été acquis
+  updatedAt    DateTime  @updatedAt
+
+  @@map("lock")
+}
+
+model QueueEntry {
+  id        Int      @id @default(autoincrement())
+  ip        String
+  createdAt DateTime @default(now())
+
+  @@unique([ip])
+  @@map("queue_entries")
+}
