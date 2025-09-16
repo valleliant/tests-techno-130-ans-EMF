@@ -96,9 +96,6 @@ export default function Home() {
     try {
       await fetch('/api/lock?action=release', { method: 'POST' });
     } catch {}
-    try {
-      await fetch('/api/queue?action=popIfFirst', { method: 'POST' });
-    } catch {}
     router.replace('/merci');
   };
 

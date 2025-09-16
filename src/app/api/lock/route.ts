@@ -22,17 +22,11 @@ export async function POST(request: Request) {
     // tente d'acquérir si ouvert ou expiré (>60s)
     const now = new Date();
     const sixtySecondsAgo = new Date(now.getTime() - 60_000);
-    const updated = await prisma.lock.update({
-      where: { id: 1 },
-      data: {},
-    }).catch(async () => {
-      // si lock inexistant, créer ouvert
-      return await prisma.lock.create({
-        data: { id: 1, isOpen: true }
-      });
-    });
-
-    if (updated.isOpen || (updated.acquiredAt && updated.acquiredAt < sixtySecondsAgo)) {
+    let lock = await prisma.lock.findUnique({ where: { id: 1 } });
+    if (!lock) {
+      lock = await prisma.lock.create({ data: { id: 1, isOpen: true } });
+    }
+    if (lock.isOpen || (lock.acquiredAt && lock.acquiredAt < sixtySecondsAgo)) {
       const acquired = await prisma.lock.update({
         where: { id: 1 },
         data: { isOpen: false, holderIp: ip, acquiredAt: new Date() }
@@ -55,14 +49,15 @@ export async function POST(request: Request) {
   }
 
   if (action === 'release') {
-    const lock = await prisma.lock.findUnique({ where: { id: 1 } });
-    if (lock && lock.holderIp !== ip) {
-      return NextResponse.json({ ok: false }, { status: 403 });
-    }
+    // libère le lock sans vérification stricte d'IP pour éviter les blocages
     const released = await prisma.lock.update({
       where: { id: 1 },
       data: { isOpen: true, holderIp: null, acquiredAt: null }
+    }).catch(async () => {
+      // si lock inexistant, créer ouvert
+      return await prisma.lock.create({ data: { id: 1, isOpen: true } });
     });
+    // ne pas toucher à la file: le premier restera position 1 et tentera d'acquérir
     return NextResponse.json({ ok: true, lock: released });
   }
 
