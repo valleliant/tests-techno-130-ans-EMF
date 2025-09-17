@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getClientIp } from '@/lib/ip';
+import { getClientIpFromHeaders } from '@/lib/ip';
+
+export const runtime = 'nodejs';
 
 // GET /api/queue -> liste de la file
 export async function GET() {
@@ -19,7 +21,7 @@ export async function GET() {
 export async function POST(request: Request) {
   const url = new URL(request.url);
   const action = url.searchParams.get('action');
-  const ip = await getClientIp();
+  const ip = getClientIpFromHeaders(request.headers);
 
   if (!action) {
     return NextResponse.json({ error: 'action requise' }, { status: 400 });

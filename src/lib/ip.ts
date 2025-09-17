@@ -1,7 +1,4 @@
-import { headers } from 'next/headers';
-
-export async function getClientIp(): Promise<string> {
-  const h = await headers();
+export function getClientIpFromHeaders(h: Headers): string {
   const forwardedFor = h.get('x-forwarded-for');
   if (forwardedFor) {
     return forwardedFor.split(',')[0].trim();
