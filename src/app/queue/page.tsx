@@ -11,26 +11,39 @@ export default function QueuePage() {
     let timer: NodeJS.Timeout;
     // rejoindre la file à l'arrivée
     fetch('/api/queue?action=join', { method: 'POST' }).catch(() => {});
+    
     const poll = async () => {
       try {
-        const res = await fetch('/api/queue?action=position', { method: 'POST' });
-        const data = await res.json();
-        if (res.ok) {
-          setPosition(data.position);
-          if (data.position === 1) {
-            // Essayer d'acquérir le lock dès que premier
-            const lockRes = await fetch('/api/lock?action=acquire', { method: 'POST' });
-            if (lockRes.ok) {
-              // sortir de la file
-              await fetch('/api/queue?action=leave', { method: 'POST' });
-              router.replace('/');
-              return;
-            }
-          }
+        // Tenter l'acquisition si premier (route atomique)
+        const acquireRes = await fetch('/api/queue/acquire-if-first', { method: 'POST' });
+        const acquireData = await acquireRes.json();
+        
+        if (acquireData.ok) {
+          // Acquisition réussie ! Rediriger vers les questions
+          router.replace('/');
+          return;
         }
-      } catch {}
-      timer = setTimeout(poll, 1500);
+        
+        // Mise à jour de la position
+        setPosition(acquireData.position || null);
+        
+        // Polling plus agressif si on est premier
+        const interval = acquireData.position === 1 ? 500 : 2000;
+        timer = setTimeout(poll, interval);
+        
+      } catch (error) {
+        // Fallback : vérifier juste la position
+        try {
+          const res = await fetch('/api/queue?action=position', { method: 'POST' });
+          const data = await res.json();
+          if (res.ok) {
+            setPosition(data.position);
+          }
+        } catch {}
+        timer = setTimeout(poll, 2000);
+      }
     };
+    
     poll();
     return () => clearTimeout(timer);
   }, [router]);
