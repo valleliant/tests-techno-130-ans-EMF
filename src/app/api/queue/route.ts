@@ -2,13 +2,20 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getClientIp } from '@/lib/ip';
 
-// GET /api/queue -> liste brute (admin/debug)
+// GET /api/queue -> liste de la file
 export async function GET() {
-  const entries = await prisma.queueEntry.findMany({ orderBy: { createdAt: 'asc' } });
-  return NextResponse.json(entries);
+  try {
+    const entries = await prisma.queueEntry.findMany({ 
+      orderBy: { createdAt: 'asc' } 
+    });
+    return NextResponse.json(entries);
+  } catch (error) {
+    console.error('Erreur GET queue:', error);
+    return NextResponse.json([]);
+  }
 }
 
-// POST /api/queue?action=join|position|leave|popIfFirst
+// POST /api/queue?action=join|position|leave
 export async function POST(request: Request) {
   const url = new URL(request.url);
   const action = url.searchParams.get('action');
@@ -18,41 +25,46 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'action requise' }, { status: 400 });
   }
 
-  if (action === 'join') {
-    // si déjà en file, renvoyer position
-    const existing = await prisma.queueEntry.findUnique({ where: { ip } }).catch(() => null);
-    if (!existing) {
+  try {
+    if (action === 'join') {
+      // Rejoindre la file (ignore si déjà présent)
       try {
         await prisma.queueEntry.create({ data: { ip } });
-      } catch {}
+      } catch {
+        // Déjà présent, pas grave
+      }
+      
+      // Retourner la position
+      const list = await prisma.queueEntry.findMany({ 
+        orderBy: { createdAt: 'asc' } 
+      });
+      const position = list.findIndex(e => e.ip === ip) + 1;
+      return NextResponse.json({ ok: true, position });
     }
-    const list = await prisma.queueEntry.findMany({ orderBy: { createdAt: 'asc' } });
-    const position = list.findIndex(e => e.ip === ip) + 1;
-    return NextResponse.json({ ok: true, position });
-  }
 
-  if (action === 'position') {
-    const list = await prisma.queueEntry.findMany({ orderBy: { createdAt: 'asc' } });
-    const position = list.findIndex(e => e.ip === ip) + 1;
-    return NextResponse.json({ ok: true, position });
-  }
-
-  if (action === 'leave') {
-    const existing = await prisma.queueEntry.findUnique({ where: { ip } }).catch(() => null);
-    if (existing) {
-      await prisma.queueEntry.delete({ where: { ip } }).catch(() => {});
+    if (action === 'position') {
+      // Juste retourner la position
+      const list = await prisma.queueEntry.findMany({ 
+        orderBy: { createdAt: 'asc' } 
+      });
+      const position = list.findIndex(e => e.ip === ip) + 1;
+      return NextResponse.json({ ok: true, position });
     }
-    return NextResponse.json({ ok: true });
+
+    if (action === 'leave') {
+      // Quitter la file
+      try {
+        await prisma.queueEntry.delete({ where: { ip } });
+      } catch {
+        // Pas présent, pas grave
+      }
+      return NextResponse.json({ ok: true });
+    }
+
+    return NextResponse.json({ error: 'action inconnue' }, { status: 400 });
+
+  } catch (error) {
+    console.error('Erreur POST queue:', error);
+    return NextResponse.json({ error: 'erreur serveur' }, { status: 500 });
   }
-
-  if (action === 'popIfFirst') {
-    // utilisé côté serveur après release du lock pour promouvoir le premier
-    const first = await prisma.queueEntry.findFirst({ orderBy: { createdAt: 'asc' } });
-    if (!first) return NextResponse.json({ ok: true, promoted: null });
-
-    await prisma.queueEntry.delete({ where: { id: first.id } });
-    return NextResponse.json({ ok: true, promoted: first.ip });
-  }
-
-  return NextResponse.json({ error: 'action inconnue' }, { status: 400 });
 }

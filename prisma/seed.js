@@ -25,21 +25,13 @@ async function main() {
   const count = await prisma.question.count();
   console.log(`Seed terminé. Nombre total de questions: ${count}`);
 
-  // Initialise le lock si inexistant (id=1)
-  const existingLock = await prisma.lock.findUnique({ where: { id: 1 } });
-  if (!existingLock) {
-    await prisma.lock.create({
-      data: {
-        id: 1,
-        isOpen: true,
-        holderIp: null,
-        acquiredAt: null
-      }
-    });
-    console.log('Lock initial créé (ouvert).');
-  } else {
-    console.log(`Lock déjà présent. isOpen=${existingLock.isOpen}`);
-  }
+  // Initialise le lock si inexistant (id=1) ou le réinitialise
+  await prisma.lock.upsert({
+    where: { id: 1 },
+    update: { isOpen: true },
+    create: { id: 1, isOpen: true }
+  });
+  console.log('Lock initialisé/réinitialisé (ouvert).');
 }
 
 main()

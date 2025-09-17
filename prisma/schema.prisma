@@ -19,11 +19,8 @@ model Question {
 }
 
 model Lock {
-  id           Int       @id @default(1)
-  isOpen       Boolean   @default(true)
-  holderIp     String?   // IP qui détient le lock
-  acquiredAt   DateTime? // quand le lock a été acquis
-  updatedAt    DateTime  @updatedAt
+  id       Int     @id @default(1)
+  isOpen   Boolean @default(true)
 
   @@map("lock")
 }

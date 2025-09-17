@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface Question {
@@ -14,10 +14,33 @@ export default function Home() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [hasLock, setHasLock] = useState<boolean>(false);
-  const [hasAnswered, setHasAnswered] = useState<boolean>(false);
-  const heartbeatRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const inactivityRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [hasAnswered, setHasAnswered] = useState(false);
+
+  useEffect(() => {
+    const init = async () => {
+      // Tenter d'acquérir le lock
+      try {
+        const acquire = await fetch('/api/lock?action=acquire', { method: 'POST' });
+        const acquireData = await acquire.json();
+        
+        if (acquire.ok && acquireData.ok) {
+          // Lock acquis ! Charger les questions
+          await fetchQuestions();
+          return;
+        }
+      } catch (error) {
+        console.error('Erreur acquisition lock:', error);
+      }
+      
+      // Échec d'acquisition : rejoindre la file et rediriger
+      try {
+        await fetch('/api/queue?action=join', { method: 'POST' });
+      } catch {}
+      router.replace('/queue');
+    };
+    
+    init();
+  }, [router]);
 
   const fetchQuestions = async () => {
     try {
@@ -33,76 +56,25 @@ export default function Home() {
     }
   };
 
-  const stopHeartbeat = useCallback(() => {
-    if (heartbeatRef.current) {
-      clearInterval(heartbeatRef.current);
-      heartbeatRef.current = null;
-    }
-  }, []);
-
-  const clearInactivity = useCallback(() => {
-    if (inactivityRef.current) {
-      clearTimeout(inactivityRef.current);
-      inactivityRef.current = null;
-    }
-  }, []);
-
   const finishSession = useCallback(async () => {
     if (hasAnswered) return;
     setHasAnswered(true);
-    stopHeartbeat();
-    clearInactivity();
+    
+    // Libérer le lock
     try {
       await fetch('/api/lock?action=release', { method: 'POST' });
-    } catch {}
+    } catch (error) {
+      console.error('Erreur libération lock:', error);
+    }
+    
+    // Rediriger vers merci
     router.replace('/merci');
-  }, [hasAnswered, stopHeartbeat, clearInactivity, router]);
-
-  const startHeartbeat = useCallback(() => {
-    stopHeartbeat();
-    heartbeatRef.current = setInterval(() => {
-      fetch('/api/lock?action=heartbeat', { method: 'POST' }).catch(() => {});
-    }, 20000);
-  }, [stopHeartbeat]);
-
-  const startInactivityTimer = useCallback(() => {
-    clearInactivity();
-    inactivityRef.current = setTimeout(() => {
-      finishSession();
-    }, 60000);
-  }, [clearInactivity, finishSession]);
-
-  useEffect(() => {
-    const init = async () => {
-      // Tenter d'acquérir le lock
-      try {
-        const acquire = await fetch('/api/lock?action=acquire', { method: 'POST' });
-        if (acquire.ok) {
-          setHasLock(true);
-          startHeartbeat();
-          startInactivityTimer();
-          await fetchQuestions();
-          return;
-        }
-      } catch {}
-      // Échec: rejoindre la file et rediriger
-      try {
-        await fetch('/api/queue?action=join', { method: 'POST' });
-      } catch {}
-      router.replace('/queue');
-    };
-    init();
-
-    return () => {
-      stopHeartbeat();
-      clearInactivity();
-    };
-  }, [router, startHeartbeat, startInactivityTimer, stopHeartbeat, clearInactivity]);
+  }, [hasAnswered, router]);
 
   const handleQuestionClick = useCallback((question: Question) => {
     if (hasAnswered) return;
     setSelectedQuestion(question);
-    // Considérer le clic comme la "réponse unique" puis finir
+    // Après avoir vu une question, terminer la session
     finishSession();
   }, [hasAnswered, finishSession]);
 
@@ -124,13 +96,7 @@ export default function Home() {
         <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">
           Questions Techniques
         </h1>
-        {!hasLock && (
-          <div className="text-center text-red-500 mb-6">
-            Accès en cours... redirection vers la file d’attente si nécessaire.
-          </div>
-        )}
         
-        {hasLock && (
         <div className="space-y-4">
           {questions.map((question) => (
             <div
@@ -142,9 +108,8 @@ export default function Home() {
             </div>
           ))}
         </div>
-        )}
 
-        {hasLock && questions.length === 0 && (
+        {questions.length === 0 && (
           <div className="text-center text-gray-500 mt-12">
             Aucune question disponible pour le moment.
           </div>
@@ -152,7 +117,7 @@ export default function Home() {
       </div>
 
       {/* Modal pour afficher la réponse */}
-      {hasLock && selectedQuestion && (
+      {selectedQuestion && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-auto">
             <div className="p-6">

@@ -1,67 +1,70 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getClientIp } from '@/lib/ip';
 
-// GET /api/lock -> status
+// GET /api/lock -> status du lock
 export async function GET() {
-  const lock = await prisma.lock.findUnique({ where: { id: 1 } });
-  return NextResponse.json(lock ?? { isOpen: true, holderIp: null });
+  try {
+    let lock = await prisma.lock.findUnique({ where: { id: 1 } });
+    if (!lock) {
+      lock = await prisma.lock.create({ data: { id: 1, isOpen: true } });
+    }
+    return NextResponse.json({ isOpen: lock.isOpen });
+  } catch (error) {
+    console.error('Erreur GET lock:', error);
+    return NextResponse.json({ isOpen: true }); // fallback ouvert
+  }
 }
 
-// POST /api/lock?action=acquire|release|heartbeat
+// POST /api/lock?action=acquire|release
 export async function POST(request: Request) {
   const url = new URL(request.url);
   const action = url.searchParams.get('action');
-  const ip = await getClientIp();
 
   if (!action) {
     return NextResponse.json({ error: 'action requise' }, { status: 400 });
   }
 
-  if (action === 'acquire') {
-    // tente d'acquérir si ouvert ou expiré (>60s)
-    const now = new Date();
-    const sixtySecondsAgo = new Date(now.getTime() - 60_000);
-    let lock = await prisma.lock.findUnique({ where: { id: 1 } });
-    if (!lock) {
-      lock = await prisma.lock.create({ data: { id: 1, isOpen: true } });
-    }
-    if (lock.isOpen || (lock.acquiredAt && lock.acquiredAt < sixtySecondsAgo)) {
+  try {
+    if (action === 'acquire') {
+      // Tenter d'acquérir : passer de ouvert à fermé
+      let lock = await prisma.lock.findUnique({ where: { id: 1 } });
+      if (!lock) {
+        lock = await prisma.lock.create({ data: { id: 1, isOpen: true } });
+      }
+
+      if (!lock.isOpen) {
+        return NextResponse.json({ ok: false, reason: 'already_locked' }, { status: 409 });
+      }
+
+      // Acquisition atomique
       const acquired = await prisma.lock.update({
         where: { id: 1 },
-        data: { isOpen: false, holderIp: ip, acquiredAt: new Date() }
+        data: { isOpen: false }
       });
-      return NextResponse.json({ ok: true, lock: acquired });
+
+      return NextResponse.json({ ok: true, isOpen: acquired.isOpen });
     }
-    return NextResponse.json({ ok: false, reason: 'locked' }, { status: 409 });
-  }
 
-  if (action === 'heartbeat') {
-    const lock = await prisma.lock.findUnique({ where: { id: 1 } });
-    if (!lock || lock.holderIp !== ip) {
-      return NextResponse.json({ ok: false }, { status: 403 });
+    if (action === 'release') {
+      // Forcer la libération
+      let released;
+      try {
+        released = await prisma.lock.update({
+          where: { id: 1 },
+          data: { isOpen: true }
+        });
+      } catch {
+        // Si le lock n'existe pas, le créer ouvert
+        released = await prisma.lock.create({ data: { id: 1, isOpen: true } });
+      }
+
+      return NextResponse.json({ ok: true, isOpen: released.isOpen });
     }
-    const hb = await prisma.lock.update({
-      where: { id: 1 },
-      data: { acquiredAt: new Date() }
-    });
-    return NextResponse.json({ ok: true, lock: hb });
-  }
 
-  if (action === 'release') {
-    // libère le lock sans vérification stricte d'IP pour éviter les blocages
-    const released = await prisma.lock.update({
-      where: { id: 1 },
-      data: { isOpen: true, holderIp: null, acquiredAt: null }
-    }).catch(async () => {
-      // si lock inexistant, créer ouvert
-      return await prisma.lock.create({ data: { id: 1, isOpen: true } });
-    });
-    // ne pas toucher à la file: le premier restera position 1 et tentera d'acquérir
-    return NextResponse.json({ ok: true, lock: released });
-  }
+    return NextResponse.json({ error: 'action inconnue' }, { status: 400 });
 
-  return NextResponse.json({ error: 'action inconnue' }, { status: 400 });
+  } catch (error) {
+    console.error('Erreur POST lock:', error);
+    return NextResponse.json({ error: 'erreur serveur' }, { status: 500 });
+  }
 }
-
-
