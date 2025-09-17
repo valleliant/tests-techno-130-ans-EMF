@@ -1,10 +1,14 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 // GET /api/lock -> status du lock
 export async function GET() {
   try {
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ isOpen: true, warning: 'DATABASE_URL manquante' });
+    }
     let lock = await prisma.lock.findUnique({ where: { id: 1 } });
     if (!lock) {
       lock = await prisma.lock.create({ data: { id: 1, isOpen: true } });

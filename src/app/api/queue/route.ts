@@ -3,17 +3,21 @@ import { prisma } from '@/lib/prisma';
 import { getClientIpFromHeaders } from '@/lib/ip';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 // GET /api/queue -> liste de la file
 export async function GET() {
   try {
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ error: 'DATABASE_URL manquante' }, { status: 503 });
+    }
     const entries = await prisma.queueEntry.findMany({ 
       orderBy: { createdAt: 'asc' } 
     });
     return NextResponse.json(entries);
   } catch (error) {
     console.error('Erreur GET queue:', error);
-    return NextResponse.json([]);
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }
 
@@ -28,6 +32,9 @@ export async function POST(request: Request) {
   }
 
   try {
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ error: 'DATABASE_URL manquante' }, { status: 503 });
+    }
     if (action === 'join') {
       // Rejoindre la file (ignore si déjà présent)
       try {
@@ -67,6 +74,6 @@ export async function POST(request: Request) {
 
   } catch (error) {
     console.error('Erreur POST queue:', error);
-    return NextResponse.json({ error: 'erreur serveur' }, { status: 500 });
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }
