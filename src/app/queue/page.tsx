@@ -31,7 +31,7 @@ export default function QueuePage() {
         const interval = acquireData.position === 1 ? 500 : 2000;
         timer = setTimeout(poll, interval);
         
-      } catch (error) {
+      } catch {
         // Fallback : vérifier juste la position
         try {
           const res = await fetch('/api/queue?action=position', { method: 'POST' });

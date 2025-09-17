@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface Question {
@@ -18,6 +18,59 @@ export default function Home() {
   const [hasAnswered, setHasAnswered] = useState<boolean>(false);
   const heartbeatRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const inactivityRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const fetchQuestions = async () => {
+    try {
+      const response = await fetch('/api/questions');
+      if (response.ok) {
+        const data = await response.json();
+        setQuestions(data);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des questions:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const stopHeartbeat = useCallback(() => {
+    if (heartbeatRef.current) {
+      clearInterval(heartbeatRef.current);
+      heartbeatRef.current = null;
+    }
+  }, []);
+
+  const clearInactivity = useCallback(() => {
+    if (inactivityRef.current) {
+      clearTimeout(inactivityRef.current);
+      inactivityRef.current = null;
+    }
+  }, []);
+
+  const finishSession = useCallback(async () => {
+    if (hasAnswered) return;
+    setHasAnswered(true);
+    stopHeartbeat();
+    clearInactivity();
+    try {
+      await fetch('/api/lock?action=release', { method: 'POST' });
+    } catch {}
+    router.replace('/merci');
+  }, [hasAnswered, stopHeartbeat, clearInactivity, router]);
+
+  const startHeartbeat = useCallback(() => {
+    stopHeartbeat();
+    heartbeatRef.current = setInterval(() => {
+      fetch('/api/lock?action=heartbeat', { method: 'POST' }).catch(() => {});
+    }, 20000);
+  }, [stopHeartbeat]);
+
+  const startInactivityTimer = useCallback(() => {
+    clearInactivity();
+    inactivityRef.current = setTimeout(() => {
+      finishSession();
+    }, 60000);
+  }, [clearInactivity, finishSession]);
 
   useEffect(() => {
     const init = async () => {
@@ -44,71 +97,18 @@ export default function Home() {
       stopHeartbeat();
       clearInactivity();
     };
-  }, [router]);
+  }, [router, startHeartbeat, startInactivityTimer, stopHeartbeat, clearInactivity]);
 
-  const fetchQuestions = async () => {
-    try {
-      const response = await fetch('/api/questions');
-      if (response.ok) {
-        const data = await response.json();
-        setQuestions(data);
-      }
-    } catch (error) {
-      console.error('Erreur lors du chargement des questions:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const startHeartbeat = () => {
-    stopHeartbeat();
-    heartbeatRef.current = setInterval(() => {
-      fetch('/api/lock?action=heartbeat', { method: 'POST' }).catch(() => {});
-    }, 20000);
-  };
-
-  const stopHeartbeat = () => {
-    if (heartbeatRef.current) {
-      clearInterval(heartbeatRef.current);
-      heartbeatRef.current = null;
-    }
-  };
-
-  const startInactivityTimer = () => {
-    clearInactivity();
-    inactivityRef.current = setTimeout(() => {
-      finishSession();
-    }, 60000);
-  };
-
-  const clearInactivity = () => {
-    if (inactivityRef.current) {
-      clearTimeout(inactivityRef.current);
-      inactivityRef.current = null;
-    }
-  };
-
-  const finishSession = async () => {
-    if (hasAnswered) return;
-    setHasAnswered(true);
-    stopHeartbeat();
-    clearInactivity();
-    try {
-      await fetch('/api/lock?action=release', { method: 'POST' });
-    } catch {}
-    router.replace('/merci');
-  };
-
-  const handleQuestionClick = (question: Question) => {
+  const handleQuestionClick = useCallback((question: Question) => {
     if (hasAnswered) return;
     setSelectedQuestion(question);
     // Considérer le clic comme la "réponse unique" puis finir
     finishSession();
-  };
+  }, [hasAnswered, finishSession]);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setSelectedQuestion(null);
-  };
+  }, []);
 
   if (isLoading) {
     return (
