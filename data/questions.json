@@ -1,0 +1,45 @@
+[
+  {
+    "id": 1,
+    "lang": "fr",
+    "question": "Quel est l'événement marquant de 1895 pour l'EMF ?",
+    "answer": "Fondation de l'École des Métiers de Fribourg en 1895.",
+    "clockId": 1
+  },
+  {
+    "id": 2,
+    "lang": "fr", 
+    "question": "Quelle est la spécialité historique de l'EMF ?",
+    "answer": "Formation technique et professionnelle dans les métiers de l'industrie.",
+    "clockId": 2
+  },
+  {
+    "id": 3,
+    "lang": "fr",
+    "question": "Combien d'années d'existence fête l'EMF ?",
+    "answer": "130 années d'excellence dans la formation technique.",
+    "clockId": 3
+  },
+  {
+    "id": 100,
+    "lang": "de",
+    "question": "Was geschah 1895 in der EMF Geschichte?",
+    "answer": "Gründung der Technischen Schule Freiburg 1895.",
+    "clockId": 100
+  },
+  {
+    "id": 101,
+    "lang": "de",
+    "question": "Welche Bereiche deckt die EMF ab?",
+    "answer": "Technische und berufliche Ausbildung in verschiedenen Industriezweigen.",
+    "clockId": 101
+  },
+  {
+    "id": 102,
+    "lang": "de",
+    "question": "Wie viele Jahre Innovation feiert die EMF?",
+    "answer": "130 Jahre technische Bildungsexzellenz und Innovation.",
+    "clockId": 102
+  }
+]
+

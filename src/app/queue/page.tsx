@@ -1,83 +1,138 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function QueuePage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [position, setPosition] = useState<number | null>(null);
-  const [isAttempting, setIsAttempting] = useState(false);
+  const [isStarting, setIsStarting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const ticketId = searchParams.get('ticketId');
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    
-    // Rejoindre la file dès l'arrivée
-    fetch('/api/queue?action=join', { method: 'POST' }).catch(() => {});
-    
-    const poll = async () => {
+    if (!ticketId) {
+      router.replace('/start');
+      return;
+    }
+
+    const pollPosition = async () => {
       try {
-        // Vérifier la position dans la file
-        const posRes = await fetch('/api/queue?action=position', { method: 'POST' });
-        const posData = await posRes.json();
-        
-        if (posRes.ok && posData.position) {
-          setPosition(posData.position);
+        const response = await fetch(`/api/queue/position?ticketId=${ticketId}`);
+        if (response.ok) {
+          const { position: pos } = await response.json();
+          setPosition(pos);
           
-          // Si on est premier, tenter l'acquisition
-          if (posData.position === 1 && !isAttempting) {
-            setIsAttempting(true);
-            
-            try {
-              const acquireRes = await fetch('/api/lock?action=acquire', { method: 'POST' });
-              const acquireData = await acquireRes.json();
-              
-              if (acquireRes.ok && acquireData.ok) {
-                // Acquisition réussie ! Quitter la file et aller aux questions
-                await fetch('/api/queue?action=leave', { method: 'POST' });
-                router.replace('/');
-                return;
-              }
-            } catch (error) {
-              console.error('Erreur acquisition:', error);
-            }
-            
-            setIsAttempting(false);
+          if (pos === 0) {
+            setError('Ticket invalide ou expiré');
           }
+        } else {
+          setError('Erreur lors de la vérification de la position');
         }
-      } catch (error) {
-        console.error('Erreur polling queue:', error);
+      } catch (err) {
+        console.error('Erreur polling:', err);
+        setError('Erreur de connexion');
       }
+    };
+
+    pollPosition();
+    const interval = setInterval(pollPosition, 2000); // Poll toutes les 2 secondes
+
+    return () => clearInterval(interval);
+  }, [ticketId, router]);
+
+  const handleStartSession = async () => {
+    if (!ticketId || position !== 1) return;
+    
+    setIsStarting(true);
+    try {
+      const response = await fetch('/api/queue/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ticketId }),
+      });
       
-      // Polling : agressif si premier, normal sinon
-      const interval = position === 1 ? 1000 : 3000;
-      timer = setTimeout(poll, interval);
-    };
-    
-    poll();
-    
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [router, position, isAttempting]);
+      if (response.ok) {
+        const result = await response.json();
+        if (result.ok) {
+          router.push(`/questions?ticketId=${ticketId}`);
+        } else {
+          setError(result.reason === 'not-first' ? 'Vous n\'êtes plus le premier dans la file' : 'Impossible de démarrer');
+        }
+      } else {
+        setError('Erreur lors du démarrage de la session');
+      }
+    } catch (err) {
+      console.error('Erreur start session:', err);
+      setError('Erreur de connexion');
+    } finally {
+      setIsStarting(false);
+    }
+  };
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-8">
+        <div className="max-w-md w-full text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">Erreur</h2>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <button
+            onClick={() => router.push('/start')}
+            className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
+          >
+            Retour au début
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen p-8 flex items-center justify-center">
-      <div className="text-center space-y-4">
-        <h1 className="text-2xl font-semibold">File d’attente</h1>
-        <p className="text-lg">
-          Votre position: <span className="font-bold">{position ?? '...'}</span>
-        </p>
-        {position === 1 && (
-          <p className="text-green-600 font-medium">
-            {isAttempting ? 'Tentative d’accès...' : 'Vous êtes le prochain !'}
-          </p>
-        )}
-        {position && position > 1 && (
+    <div className="min-h-screen flex items-center justify-center p-8">
+      <div className="max-w-md w-full text-center">
+        <h1 className="text-3xl font-bold text-gray-800 mb-8">File d'attente</h1>
+        
+        <div className="bg-gray-50 rounded-lg p-6 mb-6">
+          <div className="text-4xl font-bold text-blue-600 mb-2">
+            {position !== null ? (position === 0 ? '❌' : `${position}`) : '⏳'}
+          </div>
           <p className="text-gray-600">
-            {position - 1} personne{position > 2 ? 's' : ''} devant vous
+            {position === null && 'Vérification de votre position...'}
+            {position === 0 && 'Ticket invalide'}
+            {position === 1 && 'C\'est votre tour !'}
+            {position && position > 1 && `${position - 1} personne(s) devant vous`}
           </p>
+        </div>
+
+        {position === 1 && (
+          <button
+            onClick={handleStartSession}
+            disabled={isStarting}
+            className="w-full bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-lg font-medium"
+          >
+            {isStarting ? 'Démarrage...' : 'Commencer les questions'}
+          </button>
         )}
+
+        {position && position > 1 && (
+          <div className="text-sm text-gray-500">
+            <p>La page se mettra à jour automatiquement.</p>
+            <p className="mt-2">Position rafraîchie toutes les 2 secondes.</p>
+          </div>
+        )}
+
+        <div className="mt-6">
+          <button
+            onClick={() => router.push('/start')}
+            className="text-gray-500 hover:text-gray-700 text-sm"
+          >
+            ← Retour au début
+          </button>
+        </div>
       </div>
     </div>
   );
 }
+
