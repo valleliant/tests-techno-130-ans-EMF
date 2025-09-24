@@ -61,7 +61,7 @@ Variables disponibles :
 
 ## Usage
 
-1. **Démarrage** : Accédez à `/start` ou `/` (redirection auto)
+1. **Démarrage** : Accédez à `/` (page de démarrage directe)
 2. **File d'attente** : Cliquez "Entrer dans la file" → redirigé vers `/queue`
 3. **Attente** : La page poll votre position toutes les 2s
 4. **Questions** : Quand votre tour arrive, accédez à `/questions`

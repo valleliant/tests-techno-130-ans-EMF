@@ -22,7 +22,7 @@ function QuestionsContent() {
 
   useEffect(() => {
     if (!ticketId) {
-      router.replace('/start');
+      router.replace('/');
       return;
     }
     fetchQuestions();
