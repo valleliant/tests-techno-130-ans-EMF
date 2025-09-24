@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 interface Question {
@@ -9,11 +9,10 @@ interface Question {
   reponse: string;
 }
 
-export default function QuestionsPage() {
+function QuestionsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasAnswered, setHasAnswered] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -57,7 +56,7 @@ export default function QuestionsPage() {
   const handleQuestionClick = useCallback(async (question: Question) => {
     if (hasAnswered || isSubmitting) return;
     
-    setSelectedQuestion(question);
+    // Question sélectionnée pour soumission
     setIsSubmitting(true);
     setSubmitStatus('Envoi de la question...');
     
@@ -84,10 +83,6 @@ export default function QuestionsPage() {
       setIsSubmitting(false);
     }
   }, [hasAnswered, isSubmitting, finishSession]);
-
-  const closeModal = useCallback(() => {
-    setSelectedQuestion(null);
-  }, []);
 
   if (isLoading) {
     return (
@@ -121,7 +116,7 @@ export default function QuestionsPage() {
             >
               <p className="text-lg text-gray-700">{question.question}</p>
               <div className="mt-2 text-sm text-gray-500">
-                ID: {question.id} • Cliquez pour envoyer à l'affichage
+                ID: {question.id} • Cliquez pour envoyer à l&apos;affichage
               </div>
             </div>
           ))}
@@ -131,14 +126,22 @@ export default function QuestionsPage() {
           <div className="text-center text-gray-500 mt-12">
             Aucune question disponible pour le moment.
           </div>
-        )}</div>
+        )}
 
         <div className="mt-8 text-center text-sm text-gray-500">
-          <p>Version TEST - Simulation d'affichage via logs serveur</p>
-          <p>Questions chargées depuis JSON local • File d'attente en mémoire</p>
+          <p>Version TEST - Simulation d&apos;affichage via logs serveur</p>
+          <p>Questions chargées depuis JSON local • File d&apos;attente en mémoire</p>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function QuestionsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="text-xl text-gray-600">Chargement...</div></div>}>
+      <QuestionsContent />
+    </Suspense>
   );
 }
 

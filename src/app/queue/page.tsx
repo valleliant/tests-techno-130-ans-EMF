@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function QueuePage() {
+function QueueContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [position, setPosition] = useState<number | null>(null);
@@ -59,7 +59,7 @@ export default function QueuePage() {
         if (result.ok) {
           router.push(`/questions?ticketId=${ticketId}`);
         } else {
-          setError(result.reason === 'not-first' ? 'Vous n\'êtes plus le premier dans la file' : 'Impossible de démarrer');
+          setError(result.reason === 'not-first' ? 'Vous n&apos;êtes plus le premier dans la file' : 'Impossible de démarrer');
         }
       } else {
         setError('Erreur lors du démarrage de la session');
@@ -92,7 +92,7 @@ export default function QueuePage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-8">
       <div className="max-w-md w-full text-center">
-        <h1 className="text-3xl font-bold text-gray-800 mb-8">File d'attente</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-8">File d&apos;attente</h1>
         
         <div className="bg-gray-50 rounded-lg p-6 mb-6">
           <div className="text-4xl font-bold text-blue-600 mb-2">
@@ -133,6 +133,14 @@ export default function QueuePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function QueuePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="text-xl text-gray-600">Chargement...</div></div>}>
+      <QueueContent />
+    </Suspense>
   );
 }
 

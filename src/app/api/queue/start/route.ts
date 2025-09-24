@@ -16,8 +16,8 @@ export async function POST(request: NextRequest) {
       try {
         startSession(ticketId);
         return { ok: true };
-      } catch (error: any) {
-        if (error.message === "not-first") {
+      } catch (error: unknown) {
+        if (error instanceof Error && error.message === "not-first") {
           return { ok: false, reason: "not-first" };
         }
         throw error;
