@@ -14,7 +14,7 @@ function QueueContent() {
 
   useEffect(() => {
     if (!ticketId) {
-      router.replace('/');
+      router.replace('/guest/s/default');
       return;
     }
 
@@ -79,7 +79,7 @@ function QueueContent() {
           <h2 className="text-2xl font-bold text-red-600 mb-4">Erreur</h2>
           <p className="text-gray-600 mb-6">{error}</p>
           <button
-            onClick={() => router.push('/')}
+            onClick={() => router.push('/guest/s/default')}
             className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
           >
             Retour au début
@@ -125,7 +125,7 @@ function QueueContent() {
 
         <div className="mt-6">
           <button
-            onClick={() => router.push('/')}
+            onClick={() => router.push('/guest/s/default')}
             className="text-gray-500 hover:text-gray-700 text-sm"
           >
             ← Retour au début
