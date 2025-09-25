@@ -14,17 +14,13 @@ export async function POST(request: NextRequest) {
     }
     
     const result = await startSession(ticketId);
-    
-    if (result.ok) {
-      console.log('[API][start] started', { ticketId });
-    } else {
-      console.warn('[API][start] failed', { ticketId, reason: result.reason });
-      // Mapper les raisons Redis aux anciennes raisons pour compatibilité
-      const mappedReason = result.reason === "locked" ? "busy-active" : result.reason;
-      return NextResponse.json({ ok: false, reason: mappedReason });
+    if (!result.ok) {
+      const reason = result.reason === 'locked' ? 'busy-active' : result.reason;
+      console.warn('[API][start] failed', { ticketId, reason });
+      return NextResponse.json({ ok: false, reason });
     }
-    
-    return NextResponse.json(result);
+    console.log('[API][start] started', { ticketId });
+    return NextResponse.json({ ok: true });
   } catch (error) {
     console.error('[API] Erreur start session:', error);
     return NextResponse.json(

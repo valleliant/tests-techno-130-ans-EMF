@@ -27,32 +27,49 @@ local lockkey = KEYS[2]
 local ticket = ARGV[1]
 local ttl = tonumber(ARGV[2])
 
-if redis.call("EXISTS", lockkey) == 1 then
-  return {err="locked"}
+-- -1 = locked, 0 = not-first, 1 = success
+if redis.call('EXISTS', lockkey) == 1 then
+  return -1
 end
 
-local head = redis.call("LINDEX", qkey, 0)
+local head = redis.call('LINDEX', qkey, 0)
 if head ~= ticket then
-  return {err="not-first"}
+  return 0
 end
 
-redis.call("LPOP", qkey)
-redis.call("SET", lockkey, ticket, "NX", "EX", ttl)
+redis.call('LPOP', qkey)
+redis.call('SET', lockkey, ticket, 'NX', 'EX', ttl)
 
-return {ok="1"}
+return 1
 `;
 
 let START_SHA: string | null = null;
 export async function startSession(ticketId: string) {
   await connectRedis();
-  START_SHA ||= await redis.scriptLoad(START_LUA);
-  const res = await redis.evalSha(START_SHA!, {
-    keys: [QKEY, LOCK_KEY],
-    arguments: [ticketId, String(LOCK_TTL)],
-  }) as { ok?: string; err?: string } | null;
-  if (res && res.ok === "1") return { ok: true };
-  const reason = res && res.err ? String(res.err) : "unknown";
-  return { ok: false, reason };
+  try {
+    START_SHA ||= await redis.scriptLoad(START_LUA);
+    const res = (await redis.evalSha(START_SHA!, {
+      keys: [QKEY, LOCK_KEY],
+      arguments: [ticketId, String(LOCK_TTL)],
+    })) as number | null;
+    if (res === 1) return { ok: true };
+    if (res === 0) return { ok: false, reason: 'not-first' };
+    if (res === -1) return { ok: false, reason: 'locked' };
+    return { ok: false, reason: 'internal' };
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : String(e);
+    const isNoScript = message.includes('NOSCRIPT');
+    if (!isNoScript) throw e;
+    // Redis redémarré: rejouer le script via EVAL directement
+    const evalRes = (await redis.eval(START_LUA, {
+      keys: [QKEY, LOCK_KEY],
+      arguments: [ticketId, String(LOCK_TTL)],
+    })) as number | null;
+    if (evalRes === 1) return { ok: true };
+    if (evalRes === 0) return { ok: false, reason: 'not-first' };
+    if (evalRes === -1) return { ok: false, reason: 'locked' };
+    return { ok: false, reason: 'internal' };
+  }
 }
 
 export async function endSession(ticketId: string) {
@@ -65,4 +82,11 @@ export async function endSession(ticketId: string) {
 export async function getActiveTicketId(): Promise<string | null> {
   await connectRedis();
   return await redis.get(LOCK_KEY);
+}
+
+export async function cancelTicket(ticketId: string) {
+  await connectRedis();
+  const removed = await redis.lRem(QKEY, 0, ticketId);
+  await redis.del(`t:${ticketId}`);
+  return { ok: true, removed };
 }

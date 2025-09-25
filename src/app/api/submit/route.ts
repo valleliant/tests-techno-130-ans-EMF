@@ -40,7 +40,10 @@ export async function POST(request: NextRequest) {
     });
     
     await endSession(ticketId);
-    return NextResponse.json({ ok: true });
+    const res = NextResponse.json({ ok: true });
+    // Nettoyage cookie qid
+    res.cookies.set('qid', '', { httpOnly: true, maxAge: 0, path: '/' });
+    return res;
   } catch (error) {
     console.error('[API] Erreur submit:', error);
     return NextResponse.json(

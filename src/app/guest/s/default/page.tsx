@@ -16,14 +16,14 @@ export default function Home() {
       });
       
       if (response.ok) {
-        const { ticketId } = await response.json();
-        console.log("[UI][enqueue] success", { ticketId });
+        const { ticketId, reused } = await response.json();
+        console.log("[UI][enqueue] success", { ticketId, reused });
         console.log(`[UI][enqueue] navigate /queue?ticketId=${ticketId}`);
         router.push(`/queue?ticketId=${ticketId}`);
       } else {
         console.error("[UI][enqueue] error status=", response.status);
         console.error('Erreur lors de l\'entrée dans la file');
-        alert('Erreur lors de l&apos;entrée dans la file. Veuillez réessayer.');
+        alert('Erreur lors de l\'entrée dans la file. Veuillez réessayer.');
       }
     } catch (error) {
       console.error('[UI][enqueue] network error:', error);
