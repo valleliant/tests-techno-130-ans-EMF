@@ -9,6 +9,8 @@ function QueueContent() {
   const [position, setPosition] = useState<number | null>(null);
   const [isStarting, setIsStarting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [activeTicketId, setActiveTicketId] = useState<string | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
 
   const ticketId: string | null = searchParams ? searchParams.get('ticketId') : null;
 
@@ -20,14 +22,14 @@ function QueueContent() {
     }
 
     const pollPosition = async () => {
-      console.log('[UI][queue][poll] GET /api/queue/position', { ticketId });
+      console.log('[UI][queue][poll] GET /api/queue/status', { ticketId });
       try {
-        const response = await fetch(`/api/queue/position?ticketId=${ticketId}`);
+        const response = await fetch(`/api/queue/status?ticketId=${ticketId}`);
         if (response.ok) {
-          const { position: pos } = await response.json();
-          console.log('[UI][queue][poll] position=', pos);
+          const { position: pos, activeTicketId: active } = await response.json();
+          console.log('[UI][queue][poll] status=', { pos, active });
           setPosition(pos);
-          
+          setActiveTicketId(active ?? null);
           if (pos === 0) {
             console.warn('[UI][queue][poll] ticket inconnu/expiré');
             setError('Ticket invalide ou expiré');
@@ -67,7 +69,13 @@ function QueueContent() {
           console.log('[UI][queue][start] navigate /questions', { ticketId });
           router.push(`/questions?ticketId=${ticketId}`);
         } else {
-          setError(result.reason === 'not-first' ? 'Vous n&apos;êtes plus le premier dans la file' : 'Impossible de démarrer');
+          if (result.reason === 'busy-active') {
+            setInfo('Une session est en cours, veuillez patienter...');
+          } else if (result.reason === 'not-first') {
+            setError('Vous n\'êtes plus le premier dans la file');
+          } else {
+            setError('Impossible de démarrer');
+          }
         }
       } else {
         console.error('[UI][queue][start] http error status=', response.status);
@@ -110,12 +118,20 @@ function QueueContent() {
           <p className="text-gray-600">
             {position === null && 'Vérification de votre position...'}
             {position === 0 && 'Ticket invalide'}
-            {position === 1 && 'C\'est votre tour !'}
+            {position === 1 && (!activeTicketId || activeTicketId === ticketId) && 'C\'est votre tour !'}
+            {position === 1 && activeTicketId && activeTicketId !== ticketId && 'Une session est en cours, merci de patienter...'}
             {position && position > 1 && `${position - 1} personne(s) devant vous`}
           </p>
         </div>
 
-        {position === 1 && (
+        {info && (
+          <div className="mb-4 flex items-center justify-center gap-2 text-blue-700">
+            <span className="inline-block h-3 w-3 rounded-full border-2 border-blue-300 border-t-transparent animate-spin"></span>
+            <span className="text-sm font-medium">{info}</span>
+          </div>
+        )}
+
+        {position === 1 && (!activeTicketId || activeTicketId === ticketId) && (
           <button
             onClick={handleStartSession}
             disabled={isStarting}
