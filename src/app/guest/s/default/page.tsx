@@ -9,6 +9,7 @@ export default function Home() {
 
   const handleEnterQueue = async () => {
     setIsLoading(true);
+    console.log("[UI][enqueue] POST /api/queue/enqueue ...");
     try {
       const response = await fetch('/api/queue/enqueue', {
         method: 'POST',
@@ -16,13 +17,16 @@ export default function Home() {
       
       if (response.ok) {
         const { ticketId } = await response.json();
+        console.log("[UI][enqueue] success", { ticketId });
+        console.log(`[UI][enqueue] navigate /queue?ticketId=${ticketId}`);
         router.push(`/queue?ticketId=${ticketId}`);
       } else {
+        console.error("[UI][enqueue] error status=", response.status);
         console.error('Erreur lors de l\'entrée dans la file');
         alert('Erreur lors de l&apos;entrée dans la file. Veuillez réessayer.');
       }
     } catch (error) {
-      console.error('Erreur:', error);
+      console.error('[UI][enqueue] network error:', error);
       alert('Erreur de connexion. Veuillez réessayer.');
     } finally {
       setIsLoading(false);

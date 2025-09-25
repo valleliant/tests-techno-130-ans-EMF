@@ -9,11 +9,12 @@ Application Next.js pour captive portal (UniFi) célébrant les 130 ans de l'Éc
 ## Architecture
 
 ### Fonctionnalités
-- ✅ **File d'attente en mémoire** avec accès exclusif (un seul utilisateur à la fois)
+- ✅ **File d'attente Redis** avec accès exclusif atomique (un seul utilisateur à la fois)
 - ✅ **Questions depuis JSON local** (`data/questions.json`)
 - ✅ **Simulation d'affichage** via logs console (pas de réseau)
 - ✅ **Interface web simple** pour parcourir les questions
 - ✅ **Pas de dépendances DB** (Prisma/PostgreSQL supprimés)
+- ✅ **Robustesse multi-processus** via Redis
 
 ### Structure
 ```
@@ -22,7 +23,8 @@ Application Next.js pour captive portal (UniFi) célébrant les 130 ans de l'Éc
 ├── src/
 │   ├── lib/
 │   │   ├── questions.ts        # Chargement des questions
-│   │   ├── queue.ts           # File d'attente + mutex
+│   │   ├── redis.ts           # Connexion Redis
+│   │   ├── queue.redis.ts     # File d'attente Redis atomique
 │   │   └── displaySim.ts      # Simulation LED (logs)
 │   ├── app/
 │   │   ├── start/             # Page d'entrée dans la file
@@ -38,7 +40,7 @@ Application Next.js pour captive portal (UniFi) célébrant les 130 ans de l'Éc
 ## Installation
 
 ```bash
-# Installation des dépendances
+# Installation des dépendances (inclut Redis et ULID)
 npm install
 
 # Build de production
@@ -50,14 +52,24 @@ npm start
 
 ## Configuration
 
-Copiez `.env.local.example` vers `.env.local` pour personnaliser :
+Créez un fichier `.env.local` pour personnaliser :
 
 ```bash
-cp .env.local.example .env.local
+# Configuration Redis
+REDIS_URL=redis://127.0.0.1:6379
+
+# Configuration simulation
+DISPLAY_DELAY_MS=1500
 ```
 
 Variables disponibles :
+- `REDIS_URL` : URL de connexion Redis (défaut: `redis://127.0.0.1:6379`)
 - `DISPLAY_DELAY_MS` : Délai simulation LED (défaut: 1500ms)
+
+## Prérequis
+
+- **Node.js 18+**
+- **Redis Server** en fonctionnement sur le port 6379 (ou URL personnalisée)
 
 ## Usage
 
@@ -73,15 +85,17 @@ Variables disponibles :
 - `POST /api/queue/enqueue` → `{ ticketId }`
 - `GET /api/queue/position?ticketId=...` → `{ position }`
 - `POST /api/queue/start` + `{ ticketId }` → `{ ok, reason? }`
-- `POST /api/submit` + `{ questionId }` → `{ ok }`
+- `POST /api/queue/release` + `{ ticketId }` → `{ ok }` (libère session)
+- `GET /api/queue/status?ticketId=...` → `{ activeTicketId, position }`
+- `POST /api/submit` + `{ questionId, ticketId }` → `{ ok }`
 - `GET /api/questions` → `Question[]`
 
 ## Logs de simulation
 
 ```bash
-[QUEUE] Enqueue: abc-def-123, position: 1
-[QUEUE] Session started for ticket: abc-def-123, remaining queue: 0
-[API] Soumission question 1: Quel est l'événement de 1895 ?
+[API][enqueue] ticket created { ticketId: '01HWCRP2XB3JDFK8', at: '2024-01-15T...' }
+[API][start] started { ticketId: '01HWCRP2XB3JDFK8' }
+[API][submit] Soumission question 1: Quel est l'événement de 1895 ?
 [SIM:LED] QUESTION > Quel est l'événement de 1895 ?
 [SIM:LED] ANSWER   > Fondation de l'école.
 ```
@@ -96,18 +110,29 @@ npm run dev
 ## Architecture technique
 
 - **Next.js 15** avec TypeScript strict
-- **File d'attente** : En mémoire (process unique) avec mutex
+- **File d'attente** : Redis avec scripts Lua atomiques (multi-processus safe)
 - **Questions** : JSON statique lu via `fs.readFile`
 - **Simulation** : `console.log` uniquement, délai configurable
 - **UI** : Tailwind CSS + Radix UI components
-- **Pas de DB** ni connexions réseau externes
+- **Redis** : Backend de file d'attente robuste et partagée
+- **ULID** : Identifiants uniques pour les tickets
 
 ## Critères d'acceptation ✅
 
-- ✅ Aucune dépendance/code DB restant
+- ✅ Aucune dépendance/code DB restant (hors Redis)
 - ✅ `data/questions.json` comme seule source de questions
-- ✅ File d'attente empêche accès simultané
+- ✅ File d'attente Redis empêche accès simultané (atomique)
 - ✅ `/api/submit` fait simulation uniquement (logs)
-- ✅ App fonctionne offline (LAN uniquement)
-- ✅ TypeScript strict, logs clairs
+- ✅ App robuste en multi-processus via Redis
+- ✅ TypeScript strict, logs clairs avec ULID
+- ✅ Migration complète : ancien code en mémoire supprimé
+
+## Migration Redis ✅
+
+- ✅ **Ancienne queue en mémoire supprimée** (`lib/queue.ts`)
+- ✅ **Redis implémenté** avec scripts Lua atomiques
+- ✅ **Toutes les routes API migrées** vers Redis
+- ✅ **Session locks avec TTL** (90s auto-expiration)
+- ✅ **Tickets ULID** au lieu d'UUIDs crypto
+- ✅ **Compatible multi-processus** et résistant aux redémarrages
 

@@ -18,10 +18,11 @@ function QuestionsContent() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<string>('');
 
-  const ticketId = searchParams.get('ticketId');
+  const ticketId: string | null = searchParams ? searchParams.get('ticketId') : null;
 
   useEffect(() => {
     if (!ticketId) {
+      console.warn('[UI][questions] missing ticketId, redirect');
       router.replace('/guest/s/default');
       return;
     }
@@ -29,14 +30,16 @@ function QuestionsContent() {
   }, [ticketId, router]);
 
   const fetchQuestions = async () => {
+    console.log('[UI][questions] GET /api/questions');
     try {
       const response = await fetch('/api/questions');
       if (response.ok) {
         const data = await response.json();
+        console.log('[UI][questions] loaded', { count: data.length });
         setQuestions(data);
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des questions:', error);
+      console.error('[UI][questions] load error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -51,7 +54,7 @@ function QuestionsContent() {
     setTimeout(() => {
       router.replace('/merci');
     }, 2000); // Laisser le temps de voir le statut
-  }, [hasAnswered, router]);
+  }, [hasAnswered, router, ticketId]);
 
   const handleQuestionClick = useCallback(async (question: Question) => {
     if (hasAnswered || isSubmitting) return;
@@ -61,28 +64,31 @@ function QuestionsContent() {
     setSubmitStatus('Envoi de la question...');
     
     try {
+      console.log('[UI][submit] POST /api/submit', { questionId: question.id });
       const response = await fetch('/api/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ questionId: question.id }),
+        body: JSON.stringify({ questionId: question.id, ticketId }),
       });
       
       if (response.ok) {
+        console.log('[UI][submit] success');
         setSubmitStatus('Question envoyée... Affichage en cours... Réponse envoyée !');
         // Terminer la session après la simulation
         setTimeout(() => {
           finishSession();
         }, 1000);
       } else {
+        console.error('[UI][submit] http error status=', response.status);
         setSubmitStatus('Erreur lors de l\'envoi');
         setIsSubmitting(false);
       }
     } catch (error) {
-      console.error('Erreur submit:', error);
+      console.error('[UI][submit] network error:', error);
       setSubmitStatus('Erreur de connexion');
       setIsSubmitting(false);
     }
-  }, [hasAnswered, isSubmitting, finishSession]);
+  }, [hasAnswered, isSubmitting, finishSession, ticketId]);
 
   if (isLoading) {
     return (

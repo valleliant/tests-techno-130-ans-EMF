@@ -10,29 +10,34 @@ function QueueContent() {
   const [isStarting, setIsStarting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const ticketId = searchParams.get('ticketId');
+  const ticketId: string | null = searchParams ? searchParams.get('ticketId') : null;
 
   useEffect(() => {
     if (!ticketId) {
+      console.warn('[UI][queue] missing ticketId in URL, redirect to /guest/s/default');
       router.replace('/guest/s/default');
       return;
     }
 
     const pollPosition = async () => {
+      console.log('[UI][queue][poll] GET /api/queue/position', { ticketId });
       try {
         const response = await fetch(`/api/queue/position?ticketId=${ticketId}`);
         if (response.ok) {
           const { position: pos } = await response.json();
+          console.log('[UI][queue][poll] position=', pos);
           setPosition(pos);
           
           if (pos === 0) {
+            console.warn('[UI][queue][poll] ticket inconnu/expiré');
             setError('Ticket invalide ou expiré');
           }
         } else {
+          console.error('[UI][queue][poll] http error status=', response.status);
           setError('Erreur lors de la vérification de la position');
         }
       } catch (err) {
-        console.error('Erreur polling:', err);
+        console.error('[UI][queue][poll] network error:', err);
         setError('Erreur de connexion');
       }
     };
@@ -47,6 +52,7 @@ function QueueContent() {
     if (!ticketId || position !== 1) return;
     
     setIsStarting(true);
+    console.log('[UI][queue][start] POST /api/queue/start', { ticketId });
     try {
       const response = await fetch('/api/queue/start', {
         method: 'POST',
@@ -56,16 +62,19 @@ function QueueContent() {
       
       if (response.ok) {
         const result = await response.json();
+        console.log('[UI][queue][start] result=', result);
         if (result.ok) {
+          console.log('[UI][queue][start] navigate /questions', { ticketId });
           router.push(`/questions?ticketId=${ticketId}`);
         } else {
           setError(result.reason === 'not-first' ? 'Vous n&apos;êtes plus le premier dans la file' : 'Impossible de démarrer');
         }
       } else {
+        console.error('[UI][queue][start] http error status=', response.status);
         setError('Erreur lors du démarrage de la session');
       }
     } catch (err) {
-      console.error('Erreur start session:', err);
+      console.error('[UI][queue][start] network error:', err);
       setError('Erreur de connexion');
     } finally {
       setIsStarting(false);

@@ -1,4 +1,4 @@
-import { position } from "@/lib/queue";
+import { position } from "@/lib/queue.redis";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -7,13 +7,15 @@ export async function GET(request: NextRequest) {
     const ticketId = searchParams.get('ticketId');
     
     if (!ticketId) {
+      console.warn('[API][position] missing ticketId');
       return NextResponse.json(
         { error: "ticketId requis" },
         { status: 400 }
       );
     }
     
-    const pos = position(ticketId);
+    const pos = await position(ticketId);
+    console.log('[API][position] ticket', { ticketId, pos });
     
     return NextResponse.json({ position: pos });
   } catch (error) {
