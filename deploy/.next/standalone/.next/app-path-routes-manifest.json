@@ -1,0 +1,15 @@
+{
+  "/api/questions/route": "/api/questions",
+  "/_not-found/page": "/_not-found",
+  "/api/queue/position/route": "/api/queue/position",
+  "/api/queue/cancel/route": "/api/queue/cancel",
+  "/api/queue/enqueue/route": "/api/queue/enqueue",
+  "/api/queue/start/route": "/api/queue/start",
+  "/api/queue/release/route": "/api/queue/release",
+  "/api/queue/status/route": "/api/queue/status",
+  "/api/submit/route": "/api/submit",
+  "/guest/s/default/page": "/guest/s/default",
+  "/merci/page": "/merci",
+  "/questions/page": "/questions",
+  "/page": "/"
+}

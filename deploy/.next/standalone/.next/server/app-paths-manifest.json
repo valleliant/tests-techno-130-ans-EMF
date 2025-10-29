@@ -1,0 +1,15 @@
+{
+  "/api/questions/route": "app/api/questions/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/queue/position/route": "app/api/queue/position/route.js",
+  "/api/queue/cancel/route": "app/api/queue/cancel/route.js",
+  "/api/queue/enqueue/route": "app/api/queue/enqueue/route.js",
+  "/api/queue/start/route": "app/api/queue/start/route.js",
+  "/api/queue/release/route": "app/api/queue/release/route.js",
+  "/api/queue/status/route": "app/api/queue/status/route.js",
+  "/api/submit/route": "app/api/submit/route.js",
+  "/guest/s/default/page": "app/guest/s/default/page.js",
+  "/merci/page": "app/merci/page.js",
+  "/questions/page": "app/questions/page.js",
+  "/page": "app/page.js"
+}

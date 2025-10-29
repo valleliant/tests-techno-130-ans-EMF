@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Build autonome minimal pour déploiement sans dépendances globales
+  output: "standalone",
 };
 
 export default nextConfig;
