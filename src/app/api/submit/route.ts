@@ -1,3 +1,11 @@
+/**
+ * API POST /api/submit
+ *
+ * Rôle:
+ * - Valide le `ticketId` actif et l'identifiant de question.
+ * - Simule l'affichage de la question/réponse (logs) via `showQuestionAndAnswer`.
+ * - Termine la session (libère le verrou) et supprime le cookie `qid`.
+ */
 import { getQuestionById } from "@/lib/questions";
 import { showQuestionAndAnswer } from "@/lib/displaySim";
 import { getActiveTicketId, endSession } from "@/lib/queue.redis";
@@ -7,6 +15,7 @@ export async function POST(request: NextRequest) {
   try {
     const { questionId, ticketId } = await request.json();
     
+    // Validation d'entrée
     if (!questionId || typeof questionId !== "number") {
       console.warn('[API][submit] invalid questionId', { questionId });
       return NextResponse.json(
@@ -17,11 +26,13 @@ export async function POST(request: NextRequest) {
     if (!ticketId || typeof ticketId !== 'string') {
       return NextResponse.json({ error: 'ticketId requis' }, { status: 400 });
     }
+    // Vérifier que le ticket est bien celui actuellement actif
     const active = await getActiveTicketId();
     if (!active || active !== ticketId) {
       return NextResponse.json({ error: 'no-active-session' }, { status: 409 });
     }
     
+    // Charger la question demandée
     const question = await getQuestionById(questionId);
     if (!question) {
       console.warn('[API][submit] not found', { questionId });
@@ -39,6 +50,7 @@ export async function POST(request: NextRequest) {
       answer: question.answer
     });
     
+    // Fin de session et nettoyage cookie
     await endSession(ticketId);
     const res = NextResponse.json({ ok: true });
     // Nettoyage cookie qid

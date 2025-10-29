@@ -1,3 +1,10 @@
+/*
+ * CSS global Tailwind + thèmes.
+ *
+ * Rôle:
+ * - Déclare les variables de thème (clair/sombre) et applique les styles de base.
+ * - Expose des tokens (couleurs, radius) utilisés par les composants UI.
+ */
 @import "tailwindcss";
 @import "tw-animate-css";
 

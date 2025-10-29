@@ -1,3 +1,10 @@
+/**
+ * API GET /api/queue/position
+ *
+ * Rôle:
+ * - Retourne uniquement la position pour un `ticketId` donné.
+ * - Variante plus stricte que `/status` qui exige `ticketId`.
+ */
 import { position } from "@/lib/queue.redis";
 import { NextRequest, NextResponse } from "next/server";
 

@@ -1,3 +1,10 @@
+/**
+ * API GET /api/queue/status
+ *
+ * Rôle:
+ * - Retourne la position du `ticketId` fourni et l'`activeTicketId` courant.
+ * - Utilisée par le polling côté UI pour rafraîchir l'état de la file.
+ */
 import { getActiveTicketId, position } from "@/lib/queue.redis";
 import { NextRequest, NextResponse } from "next/server";
 

@@ -10,6 +10,13 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
+/**
+ * Composant LoginForm: exemple d'UI de connexion (statique/demo).
+ *
+ * Rôle:
+ * - Démonstration des composants UI (Card, Input, Button, etc.).
+ * - Non connecté à une authentification réelle.
+ */
 export function LoginForm({
   className,
   ...props

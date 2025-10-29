@@ -1,3 +1,15 @@
+/**
+ * Page d'accueil publique (route `/guest/s/default`).
+ *
+ * Rôle:
+ * - Présente l'entrée dans la file d'attente.
+ * - Appelle l'API `POST /api/queue/enqueue` pour obtenir un `ticketId` puis
+ *   redirige vers `/queue?ticketId=...`.
+ *
+ * Notes:
+ * - Marquée `use client` car elle utilise des hooks React et le Router côté client.
+ */
+'use client';
 'use client';
 
 import { useState } from 'react';

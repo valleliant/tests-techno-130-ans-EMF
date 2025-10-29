@@ -1,3 +1,11 @@
+/**
+ * API POST /api/queue/start
+ *
+ * Rôle:
+ * - Tente de démarrer une session pour `ticketId` si et seulement si le ticket
+ *   est en tête de file et qu'aucune session n'est verrouillée.
+ * - Retourne `{ ok: true }` ou `{ ok: false, reason }` (`not-first`, `busy-active`).
+ */
 import { startSession } from "@/lib/queue.redis";
 import { NextRequest, NextResponse } from "next/server";
 

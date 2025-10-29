@@ -1,3 +1,9 @@
+/**
+ * API POST /api/queue/cancel
+ *
+ * Rôle:
+ * - Supprime un ticket de la file (`lRem`) et nettoie le cookie `qid`.
+ */
 import { cancelTicket } from "@/lib/queue.redis";
 import { NextRequest, NextResponse } from "next/server";
 

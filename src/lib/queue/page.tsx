@@ -1,3 +1,14 @@
+/**
+ * Page de file d'attente (route `/queue`).
+ *
+ * Rôle:
+ * - Affiche la position de l'utilisateur dans la file via `GET /api/queue/status`.
+ * - Permet de démarrer la session quand la position est 1 via `POST /api/queue/start`.
+ * - Redirige vers `/questions?ticketId=...` lorsque la session peut commencer.
+ *
+ * Notes:
+ * - Marquée `use client` pour utiliser `useSearchParams` et les hooks de navigation.
+ */
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
@@ -6,6 +17,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 function QueueContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  // États d'écran
   const [position, setPosition] = useState<number | null>(null);
   const [isStarting, setIsStarting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -14,6 +26,7 @@ function QueueContent() {
 
   const ticketId: string | null = searchParams ? searchParams.get('ticketId') : null;
 
+  // Au montage: vérifier le ticket et démarrer le polling
   useEffect(() => {
     if (!ticketId) {
       console.warn('[UI][queue] missing ticketId in URL, redirect to /guest/s/default');
@@ -50,6 +63,7 @@ function QueueContent() {
     return () => clearInterval(interval);
   }, [ticketId, router]);
 
+  // Tentative de démarrage de la session côté serveur
   const handleStartSession = async () => {
     if (!ticketId || position !== 1) return;
     

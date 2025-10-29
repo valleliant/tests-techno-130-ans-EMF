@@ -1,3 +1,10 @@
+/**
+ * API GET /api/questions
+ *
+ * Rôle:
+ * - Charge les questions depuis `data/questions.json` via `loadQuestions()`.
+ * - Adapte la clé `answer` -> `reponse` pour compatibilité avec l'UI.
+ */
 import { NextResponse } from 'next/server';
 import { loadQuestions } from '@/lib/questions';
 

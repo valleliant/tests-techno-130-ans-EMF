@@ -1,3 +1,10 @@
+/**
+ * Hook useIsMobile: détecte si la fenêtre est sous le breakpoint mobile.
+ *
+ * Rôle:
+ * - Écoute `matchMedia` et expose un booléen `isMobile`.
+ * - Utile pour adapter l'UI selon la largeur d'écran.
+ */
 import * as React from "react"
 
 const MOBILE_BREAKPOINT = 768

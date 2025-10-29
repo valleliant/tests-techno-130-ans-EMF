@@ -1,3 +1,10 @@
+/**
+ * API POST /api/queue/release
+ *
+ * Rôle:
+ * - Termine la session associée au `ticketId` et supprime le cookie `qid`.
+ * - Utilisée pour libérer explicitement la session si nécessaire.
+ */
 import { endSession } from "@/lib/queue.redis";
 import { NextRequest, NextResponse } from "next/server";
 
