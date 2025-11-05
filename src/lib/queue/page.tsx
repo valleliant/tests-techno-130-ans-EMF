@@ -29,8 +29,8 @@ function QueueContent() {
   // Au montage: vérifier le ticket et démarrer le polling
   useEffect(() => {
     if (!ticketId) {
-      console.warn('[UI][queue] missing ticketId in URL, redirect to /guest/s/default');
-      router.replace('/guest/s/default');
+      console.warn('[UI][queue] missing ticketId in URL, redirect to /');
+      router.replace('/');
       return;
     }
 
@@ -110,7 +110,7 @@ function QueueContent() {
           <h2 className="text-2xl font-bold text-red-600 mb-4">Erreur</h2>
           <p className="text-gray-600 mb-6">{error}</p>
           <button
-            onClick={() => router.push('/guest/s/default')}
+            onClick={() => router.push('/')}
             className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
           >
             Retour au début

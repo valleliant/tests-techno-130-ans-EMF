@@ -33,12 +33,6 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
-      "page": "/guest/s/default",
-      "regex": "^/guest/s/default(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/guest/s/default(?:/)?$"
-    },
-    {
       "page": "/merci",
       "regex": "^/merci(?:/)?$",
       "routeKeys": {},
@@ -49,6 +43,12 @@
       "regex": "^/questions(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/questions(?:/)?$"
+    },
+    {
+      "page": "/queue",
+      "regex": "^/queue(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/queue(?:/)?$"
     }
   ],
   "dataRoutes": [],

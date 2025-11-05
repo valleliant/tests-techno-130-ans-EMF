@@ -40,7 +40,7 @@ function QuestionsContent() {
   useEffect(() => {
     if (!ticketId) {
       console.warn('[UI][questions] missing ticketId, redirect');
-      router.replace('/guest/s/default');
+      router.replace('/');
       return;
     }
     fetchQuestions();
