@@ -20,23 +20,15 @@ function HomeContent() {
   const autoTriggeredRef = useRef(false);
 
   useEffect(() => {
-    const tok = searchParams?.get('tok');
-    const clientip = searchParams?.get('clientip');
-    // Les paramètres supplémentaires peuvent être utiles pour debug/log
-    // mais ne sont pas requis pour la pré-auth
-    // const gatewayname = searchParams.get('gatewayname');
-    // const redir = searchParams.get('redir');
+    const authaction = searchParams?.get('authaction');
 
-    if (tok && clientip && !isAuthenticating) {
+    if (authaction && !isAuthenticating) {
       setIsAuthenticating(true);
-      // Après la pré-auth OpenNDS, on revient sur une page qui enclenche
-      // automatiquement l'entrée dans la file d'attente, sans action utilisateur
-      const returnUrl = `${window.location.origin}/?auto=1`;
-      const authUrl = `http://192.168.1.1:2050/opennds_preauth/?clientip=${encodeURIComponent(clientip)}&tok=${encodeURIComponent(tok)}&redir=${encodeURIComponent(returnUrl)}`;
-      window.location.href = authUrl;
+      console.log('[OpenNDS] Redirecting to auth URL:', authaction);
+      window.location.href = authaction;
       return;
     }
-  }, [searchParams, isAuthenticating, router]);
+  }, [searchParams, isAuthenticating]);
 
   // --------- Logique d'entrée dans la file (ancien /guest/s/default) ---------
   const handleEnterQueue = useCallback(async () => {
