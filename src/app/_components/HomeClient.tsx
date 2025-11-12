@@ -8,6 +8,7 @@ export default function HomeClient() {
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const autoTriggeredRef = useRef(false);
+  const [secondsCounter, setSecondsCounter] = useState(0);
 
   const handleEnterQueue = useCallback(async () => {
     setIsLoading(true);
@@ -39,6 +40,14 @@ export default function HomeClient() {
     }
   }, [searchParams, isLoading, handleEnterQueue]);
 
+  // Compteur simple qui s'incrémente chaque seconde
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setSecondsCounter((prev) => prev + 1);
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
     <div className="min-h-screen flex items-center justify-center p-8">
       <div className="max-w-md w-full">
@@ -60,6 +69,9 @@ export default function HomeClient() {
           >
             {isLoading ? 'Entrée en cours...' : 'Entrer dans la file d\'attente'}
           </button>
+          <div className="text-center text-sm text-gray-500">
+            Compteur (test): {secondsCounter}
+          </div>
 
           <div className="text-xs text-gray-400 text-center">
             Version TEST - Questions via JSON local, simulation d&apos;affichage uniquement

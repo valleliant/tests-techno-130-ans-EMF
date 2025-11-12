@@ -1,15 +1,15 @@
 {
+  "/api/queue/cancel/route": "/api/queue/cancel",
   "/_not-found/page": "/_not-found",
   "/api/questions/route": "/api/questions",
-  "/api/queue/cancel/route": "/api/queue/cancel",
   "/api/queue/enqueue/route": "/api/queue/enqueue",
   "/api/queue/position/route": "/api/queue/position",
-  "/api/queue/release/route": "/api/queue/release",
+  "/api/submit/route": "/api/submit",
   "/api/queue/status/route": "/api/queue/status",
   "/api/queue/start/route": "/api/queue/start",
-  "/api/submit/route": "/api/submit",
-  "/merci/page": "/merci",
+  "/api/queue/release/route": "/api/queue/release",
   "/page": "/",
-  "/questions/page": "/questions",
-  "/queue/page": "/queue"
+  "/queue/page": "/queue",
+  "/merci/page": "/merci",
+  "/questions/page": "/questions"
 }

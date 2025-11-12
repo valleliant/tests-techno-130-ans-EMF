@@ -1,15 +1,15 @@
 {
+  "/api/queue/cancel/route": "app/api/queue/cancel/route.js",
   "/_not-found/page": "app/_not-found/page.js",
   "/api/questions/route": "app/api/questions/route.js",
-  "/api/queue/cancel/route": "app/api/queue/cancel/route.js",
   "/api/queue/enqueue/route": "app/api/queue/enqueue/route.js",
   "/api/queue/position/route": "app/api/queue/position/route.js",
-  "/api/queue/release/route": "app/api/queue/release/route.js",
+  "/api/submit/route": "app/api/submit/route.js",
   "/api/queue/status/route": "app/api/queue/status/route.js",
   "/api/queue/start/route": "app/api/queue/start/route.js",
-  "/api/submit/route": "app/api/submit/route.js",
-  "/merci/page": "app/merci/page.js",
+  "/api/queue/release/route": "app/api/queue/release/route.js",
   "/page": "app/page.js",
-  "/questions/page": "app/questions/page.js",
-  "/queue/page": "app/queue/page.js"
+  "/queue/page": "app/queue/page.js",
+  "/merci/page": "app/merci/page.js",
+  "/questions/page": "app/questions/page.js"
 }
