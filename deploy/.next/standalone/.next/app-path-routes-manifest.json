@@ -1,15 +1,1 @@
-{
-  "/api/queue/cancel/route": "/api/queue/cancel",
-  "/_not-found/page": "/_not-found",
-  "/api/questions/route": "/api/questions",
-  "/api/queue/enqueue/route": "/api/queue/enqueue",
-  "/api/queue/position/route": "/api/queue/position",
-  "/api/submit/route": "/api/submit",
-  "/api/queue/status/route": "/api/queue/status",
-  "/api/queue/start/route": "/api/queue/start",
-  "/api/queue/release/route": "/api/queue/release",
-  "/page": "/",
-  "/queue/page": "/queue",
-  "/merci/page": "/merci",
-  "/questions/page": "/questions"
-}
+{"/_not-found/page":"/_not-found","/questions/categories/page":"/questions/categories","/questions/list/page":"/questions/list","/page":"/","/questions/queue/page":"/questions/queue","/questions/display/page":"/questions/display","/api/disconnect/route":"/api/disconnect","/questions/page":"/questions"}

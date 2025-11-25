@@ -1,138 +1,129 @@
-# Tests Techno 130 ans EMF - Version TEST
+# Questionnaire captif EMF
 
-## Description
-
-Application Next.js pour captive portal (UniFi) célébrant les 130 ans de l'École des Métiers de Fribourg.
-
-**Version TEST** : Cette version ne communique pas avec les serveurs web (LED/Horloges) et utilise uniquement des simulations locales.
+Application Next.js 14 simplifiée pour portail OpenNDS : aucune interaction client-side, uniquement des formulaires HTML classiques et des redirections GET.
 
 ## Architecture
 
-### Fonctionnalités
-- ✅ **File d'attente Redis** avec accès exclusif atomique (un seul utilisateur à la fois)
-- ✅ **Questions depuis JSON local** (`data/questions.json`)
-- ✅ **Simulation d'affichage** via logs console (pas de réseau)
-- ✅ **Interface web simple** pour parcourir les questions
-- ✅ **Pas de dépendances DB** (Prisma/PostgreSQL supprimés)
-- ✅ **Robustesse multi-processus** via Redis
+- `/questions` : choix de la langue (FR/DE)
+- `/questions/categories` : choix d’une catégorie en fonction de la langue
+- `/questions/list` : sélection d’une question (radios, formulaire GET)
+- `/questions/submit` : route serveur qui enregistre la question dans Redis puis redirige vers la file d’attente
+- `/questions/queue` : file d’attente HTML avec meta refresh (toutes les 5 s)
 
 ### Structure
 ```
 ├── data/
-│   └── questions.json          # Questions en FR/DE
+│   └── questions.json          # Questions FR/DE classées par catégorie
 ├── src/
-│   ├── lib/
-│   │   ├── questions.ts        # Chargement des questions
-│   │   ├── redis.ts           # Connexion Redis
-│   │   ├── queue.redis.ts     # File d'attente Redis atomique
-│   │   └── displaySim.ts      # Simulation LED (logs)
 │   ├── app/
-│   │   ├── start/             # Page d'entrée dans la file
-│   │   ├── queue/             # Page de file d'attente  
-│   │   ├── questions/         # Sélection des questions
-│   │   └── api/
-│   │       ├── queue/         # API file d'attente
-│   │       ├── questions/     # API questions
-│   │       └── submit/        # API soumission
-│   └── ...
+│   │   ├── layout.tsx          # Layout minimal (HTML/CSS inline uniquement)
+│   │   ├── page.tsx            # Redirection immédiate vers /questions
+│   │   └── questions/
+│   │       ├── page.tsx
+│   │       ├── categories/page.tsx
+│   │       ├── list/page.tsx
+│   │       ├── submit/route.ts
+│   │       └── queue/
+│   │           ├── head.tsx      # Meta refresh 5 s
+│   │           └── page.tsx
+│   └── lib/
+│       ├── redis.ts            # Client ioredis + safeRedisOperation
+│       └── types.ts            # Question / QueueEntry / QuestionsData
 ```
 
-## Installation
+## Données
+
+`data/questions.json` contient les questions FR/DE exactement comme indiqué dans le brief (catégories `technologie`, `loisirs`, `general`, etc.). Le chargement se fait côté serveur via import direct.
+
+## Intégration avec le portail captif (OpenNDS)
+
+### 1. Page d’entrée à utiliser dans le portail
+
+Dans la configuration du portail captif, pointez simplement vers :
+
+- `http://<ip_du_raspberry>:3000/questions`
+
+L’application n’essaie plus d’ouvrir Internet : elle collecte les réponses et affiche uniquement la file d’attente interne.
+
+### 2. Enchaînement des pages (flux utilisateur complet)
+
+1. **Choix de langue**
+   - `GET /questions`
+   - Boutons envoyant `lang=fr|de`
+
+2. **Choix de catégorie**
+   - `GET /questions/categories?lang=fr`
+   - Boutons vers `GET /questions/list?lang=fr&category=technologie`
+
+3. **Liste de questions**
+   - `GET /questions/list?lang=fr&category=technologie`
+   - Radio `questionId` puis `GET /questions/submit?lang=fr&category=technologie&questionId=2`
+
+4. **Soumission**
+   - `/questions/submit` enregistre la question dans Redis puis redirige vers la file :
+     - `GET /questions/queue?userId=abc123&lang=fr`
+
+5. **File d’attente**
+   - `GET /questions/queue?userId=abc123&lang=fr`
+   - Affiche la position + temps estimé, meta refresh automatique toutes les 5 secondes
+
+### 3. Récupération manuelle des pages (debug / tests)
+
+Depuis n’importe quel client (ou depuis le portail), vous pouvez tester les pages avec `curl` ou un navigateur :
 
 ```bash
-# Installation des dépendances (inclut Redis et ULID)
-npm install
+# Page d’entrée (choix de langue)
+curl "http://<ip_du_raspberry>:3000/questions"
 
-# Build de production
-npm run build
+# Page catégories FR
+curl "http://<ip_du_raspberry>:3000/questions/categories?lang=fr"
 
-# Démarrage
-npm start
+# Liste des questions FR / technologie
+curl "http://<ip_du_raspberry>:3000/questions/list?lang=fr&category=technologie"
+
+# Soumission d’une question
+curl -i "http://<ip_du_raspberry>:3000/questions/submit?lang=fr&category=technologie&questionId=2"
+
+# File d’attente (auto refresh côté navigateur)
+curl "http://<ip_du_raspberry>:3000/questions/queue?userId=abc123&lang=fr"
 ```
+
+En production, seul le premier appel (`/` ou `/questions`) doit être utilisé par le portail captif ; les autres URLs sont enchaînées automatiquement par les formulaires HTML.
 
 ## Configuration
 
-Créez un fichier `.env.local` pour personnaliser :
-
-```bash
-# Configuration Redis
-REDIS_URL=redis://127.0.0.1:6379
-
-# Configuration simulation
-DISPLAY_DELAY_MS=1500
+Créer `.env.local` à la racine :
+```
+REDIS_HOST=localhost
+REDIS_PORT=6379
 ```
 
-Variables disponibles :
-- `REDIS_URL` : URL de connexion Redis (défaut: `redis://127.0.0.1:6379`)
-- `DISPLAY_DELAY_MS` : Délai simulation LED (défaut: 1500ms)
+`safeRedisOperation` bascule automatiquement en mode fallback si Redis est absent. La route `/questions/queue` affiche alors un message dédié.
 
-## Prérequis
-
-- **Node.js 18+**
-- **Redis Server** en fonctionnement sur le port 6379 (ou URL personnalisée)
-
-## Usage
-
-1. **Démarrage** : Accédez à `/guest/s/default` (ou `/` pour redirection auto)
-2. **File d'attente** : Cliquez "Entrer dans la file" → redirigé vers `/queue`
-3. **Attente** : La page poll votre position toutes les 2s
-4. **Questions** : Quand votre tour arrive, accédez à `/questions`
-5. **Simulation** : Cliquez une question → simulation d'affichage via logs
-6. **Fin** : Redirection automatique vers `/merci`
-
-## API Routes
-
-- `POST /api/queue/enqueue` → `{ ticketId }`
-- `GET /api/queue/position?ticketId=...` → `{ position }`
-- `POST /api/queue/start` + `{ ticketId }` → `{ ok, reason? }`
-- `POST /api/queue/release` + `{ ticketId }` → `{ ok }` (libère session)
-- `GET /api/queue/status?ticketId=...` → `{ activeTicketId, position }`
-- `POST /api/submit` + `{ questionId, ticketId }` → `{ ok }`
-- `GET /api/questions` → `Question[]`
-
-## Logs de simulation
+## Scripts
 
 ```bash
-[API][enqueue] ticket created { ticketId: '01HWCRP2XB3JDFK8', at: '2024-01-15T...' }
-[API][start] started { ticketId: '01HWCRP2XB3JDFK8' }
-[API][submit] Soumission question 1: Quel est l'événement de 1895 ?
-[SIM:LED] QUESTION > Quel est l'événement de 1895 ?
-[SIM:LED] ANSWER   > Fondation de l'école.
-```
-
-## Développement
-
-```bash
-# Mode développement avec hot-reload
+npm install
 npm run dev
+npm run lint
+npm run build
+npm start
 ```
 
-## Architecture technique
+## Logs importants
 
-- **Next.js 15** avec TypeScript strict
-- **File d'attente** : Redis avec scripts Lua atomiques (multi-processus safe)
-- **Questions** : JSON statique lu via `fs.readFile`
-- **Simulation** : `console.log` uniquement, délai configurable
-- **UI** : Tailwind CSS + Radix UI components
-- **Redis** : Backend de file d'attente robuste et partagée
-- **ULID** : Identifiants uniques pour les tickets
+- `[CATEGORIES] Lang: fr, Categories: technologie, loisirs, general`
+- `[QUESTIONS LIST] Lang: fr, Category: technologie, Count: 3`
+- `[SUBMIT] Received - Lang: fr, Category: technologie, QuestionId: 2`
+- `[REDIS] Successfully added to queue: { ... }`
+- `[SUBMIT] Redirecting to queue page with userId: abc123`
+- `[QUEUE] UserId: abc123, Queue length: 4`
+- `[QUEUE] Position: 2/4, Estimated time: 60s`
 
-## Critères d'acceptation ✅
+## Contraintes respectées
 
-- ✅ Aucune dépendance/code DB restant (hors Redis)
-- ✅ `data/questions.json` comme seule source de questions
-- ✅ File d'attente Redis empêche accès simultané (atomique)
-- ✅ `/api/submit` fait simulation uniquement (logs)
-- ✅ App robuste en multi-processus via Redis
-- ✅ TypeScript strict, logs clairs avec ULID
-- ✅ Migration complète : ancien code en mémoire supprimé
-
-## Migration Redis ✅
-
-- ✅ **Ancienne queue en mémoire supprimée** (`lib/queue.ts`)
-- ✅ **Redis implémenté** avec scripts Lua atomiques
-- ✅ **Toutes les routes API migrées** vers Redis
-- ✅ **Session locks avec TTL** (90s auto-expiration)
-- ✅ **Tickets ULID** au lieu d'UUIDs crypto
-- ✅ **Compatible multi-processus** et résistant aux redémarrages
-
+- Aucune dépendance Tailwind / Radix / UI client → HTML + CSS inline uniquement
+- Aucun composant client (`'use client'`) ni hooks React
+- Toutes les interactions se font via formulaires GET et redirections serveur
+- Redis géré via `ioredis` + fallback robuste
+- TypeScript strict + imports absolus `@/`
