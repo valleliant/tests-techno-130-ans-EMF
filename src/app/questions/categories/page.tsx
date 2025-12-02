@@ -4,8 +4,22 @@ import type { QuestionsData } from '@/lib/types';
 const questionsData = questionsDataJson as QuestionsData;
 
 const categoryLabels: Record<'fr' | 'de', Record<string, string>> = {
-  fr: { technologie: '💻 Technologie', loisirs: '🎨 Loisirs', general: '🌟 Général' },
-  de: { technologie: '💻 Technologie', freizeit: '🎨 Freizeit', allgemein: '🌟 Allgemein' },
+  fr: {
+    metiers_actuels: '🛠️ Métiers actuels',
+    histoire_ecole: '🏫 Histoire de l’école',
+    personnalites_illustres: '⭐ Personnalités illustres',
+    anciens_metiers: '📜 Anciens métiers',
+    histoire_metiers_actuels: '📚 Histoire des métiers actuels',
+    emf_histoire_ville: '🏙️ EMF & histoire de la ville',
+  },
+  de: {
+    aktuelle_berufe: '🛠️ Aktuelle Berufe',
+    geschichte_schule: '🏫 Geschichte der Schule',
+    fruehere_berufe: '📜 Frühere Berufe',
+    geschichte_heutigen_berufe: '📚 Geschichte der heutigen Berufe',
+    emf_geschichte_stadt: '🏙️ EMF & Geschichte der Stadt',
+    beruehmte_persoenlichkeiten: '⭐ Berühmte Persönlichkeiten',
+  },
 };
 
 const styles = `

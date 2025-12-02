@@ -1,10 +1,10 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
+  "/api/disconnect/route": "app/api/disconnect/route.js",
+  "/page": "app/page.js",
   "/questions/categories/page": "app/questions/categories/page.js",
   "/questions/list/page": "app/questions/list/page.js",
-  "/page": "app/page.js",
-  "/questions/queue/page": "app/questions/queue/page.js",
   "/questions/display/page": "app/questions/display/page.js",
-  "/api/disconnect/route": "app/api/disconnect/route.js",
+  "/questions/queue/page": "app/questions/queue/page.js",
   "/questions/page": "app/questions/page.js"
 }

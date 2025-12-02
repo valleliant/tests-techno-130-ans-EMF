@@ -1,5 +1,7 @@
 import { redis, redisAvailable, safeRedisOperation } from '@/lib/redis';
 import type { QueueEntry } from '@/lib/types';
+import { sendQuestionToWled } from '@/lib/wled';
+import { sendQuestionIdToDisplay } from '@/lib/numberDisplay';
 
 const styles = `
   * {
@@ -171,6 +173,11 @@ export default async function DisplayPage({ searchParams }: DisplayPageProps) {
 
   if (!redisAvailable || !currentEntry) {
     console.warn('[DISPLAY] Redis unavailable or queue empty');
+
+    // File vide ou Redis indisponible : on affiche le message par défaut
+    // sur le panneau LED, et on envoie l'ID 255 sur l'afficheur 4 digits.
+    await sendQuestionToWled('ECOLE DES METIERS DE FRIBOURG');
+    await sendQuestionIdToDisplay(255);
     return (
       <html>
         <head>
@@ -224,6 +231,16 @@ export default async function DisplayPage({ searchParams }: DisplayPageProps) {
       </html>
     );
   }
+
+  // À partir d'ici, on sait que l'utilisateur est bien en tête de file.
+  // On peut donc envoyer la réponse détaillée au panneau LED WLED
+  // (en majuscules et sans accents, géré dans le helper)
+  // ainsi que l'ID de la question à l'afficheur 4 digits.
+  const ledText = currentEntry.reponse_detaillee ?? currentEntry.question;
+  await sendQuestionToWled(ledText);
+
+  const numericId = Number.parseInt(currentEntry.id, 10);
+  await sendQuestionIdToDisplay(Number.isNaN(numericId) ? 255 : numericId);
 
   const script = `
     (function () {

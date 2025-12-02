@@ -131,6 +131,7 @@ export default async function QueuePage({ searchParams }: QueuePageProps) {
           const entry: QueueEntry = {
             id: questionId,
             question: question.question,
+            reponse_detaillee: question.reponse_detaillee,
             lang: normalizedLang,
             category,
             timestamp: new Date().toISOString(),
@@ -186,52 +187,6 @@ export default async function QueuePage({ searchParams }: QueuePageProps) {
       }
     }
   }
-
-  // Nettoyage automatique de la tête de file: supprimer les questions en tête depuis plus de 30s
-  await safeRedisOperation(
-    async () => {
-      if (!redis) {
-        throw new Error('Redis client not initialized');
-      }
-
-      const now = Date.now();
-      // Limiter le nombre de suppressions consécutives pour éviter une boucle infinie
-      for (let i = 0; i < 20; i += 1) {
-        const headRaw = await redis.lindex('questions:queue', 0);
-        if (!headRaw) {
-          break;
-        }
-
-        let head: QueueEntry | null = null;
-        try {
-          head = JSON.parse(headRaw) as QueueEntry;
-        } catch {
-          // Entrée corrompue: on la supprime et on continue
-          await redis.lpop('questions:queue');
-          console.warn('[QUEUE] Removed invalid head entry during cleanup');
-          continue;
-        }
-
-        const ts = Date.parse(head.timestamp);
-        const ageMs = Number.isNaN(ts) ? 0 : now - ts;
-
-        if (ageMs >= 30000) {
-          await redis.lpop('questions:queue');
-          console.log('[QUEUE] Auto-removed expired head from queue:', {
-            userId: head.userId,
-            id: head.id,
-            ageMs,
-          });
-        } else {
-          break;
-        }
-      }
-
-      return true;
-    },
-    false,
-    'QUEUE cleanup expired heads',
-  );
 
   if (!userId) {
     return (

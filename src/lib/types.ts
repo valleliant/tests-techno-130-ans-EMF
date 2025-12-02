@@ -1,6 +1,7 @@
 export interface Question {
   id: string;
   question: string;
+  reponse_detaillee: string;
 }
 
 export interface QuestionsByCategory {
@@ -14,6 +15,7 @@ export interface QuestionsData {
 export interface QueueEntry {
   id: string;
   question: string;
+  reponse_detaillee: string;
   lang: string;
   category: string;
   timestamp: string;
