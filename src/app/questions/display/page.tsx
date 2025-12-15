@@ -1,7 +1,6 @@
 import { redis, redisAvailable, safeRedisOperation } from '@/lib/redis';
 import type { QueueEntry } from '@/lib/types';
-import { sendQuestionToWled } from '@/lib/wled';
-import { sendQuestionIdToDisplay } from '@/lib/numberDisplay';
+import { ensureQueueWorkerRunning } from '@/lib/queueWorker';
 
 const styles = `
   * {
@@ -116,6 +115,10 @@ interface DisplayPageProps {
 }
 
 export default async function DisplayPage({ searchParams }: DisplayPageProps) {
+  // Déclenchement explicite du worker (idempotent).
+  // Le worker est le SEUL responsable des envois aux ESP32.
+  ensureQueueWorkerRunning();
+
   const userId = searchParams.userId;
   const langParam = searchParams.lang;
   const clientip = searchParams.clientip;
@@ -173,11 +176,7 @@ export default async function DisplayPage({ searchParams }: DisplayPageProps) {
 
   if (!redisAvailable || !currentEntry) {
     console.warn('[DISPLAY] Redis unavailable or queue empty');
-
-    // File vide ou Redis indisponible : on affiche le message par défaut
-    // sur le panneau LED, et on envoie l'ID 255 sur l'afficheur 4 digits.
-    await sendQuestionToWled('ECOLE DES METIERS DE FRIBOURG');
-    await sendQuestionIdToDisplay(255);
+    // Note: on n'envoie PAS aux ESP32 ici, le worker s'en charge
     return (
       <html>
         <head>
@@ -190,7 +189,7 @@ export default async function DisplayPage({ searchParams }: DisplayPageProps) {
           <div className="page">
             <div className="card">
               <h1>{msg.title}</h1>
-              <p className="question">Aucune question en attente d’affichage.</p>
+              <p className="question">Aucune question en attente d'affichage.</p>
             </div>
           </div>
         </body>
@@ -224,7 +223,7 @@ export default async function DisplayPage({ searchParams }: DisplayPageProps) {
           <div className="page">
             <div className="card">
               <h1>{msg.title}</h1>
-              <p className="question">Redirection vers la file d’attente…</p>
+              <p className="question">Redirection vers la file d'attente…</p>
             </div>
           </div>
         </body>
@@ -232,15 +231,9 @@ export default async function DisplayPage({ searchParams }: DisplayPageProps) {
     );
   }
 
-  // À partir d'ici, on sait que l'utilisateur est bien en tête de file.
-  // On peut donc envoyer la réponse détaillée au panneau LED WLED
-  // (en majuscules et sans accents, géré dans le helper)
-  // ainsi que l'ID de la question à l'afficheur 4 digits.
-  const ledText = currentEntry.reponse_detaillee ?? currentEntry.question;
-  await sendQuestionToWled(ledText);
-
-  const numericId = Number.parseInt(currentEntry.id, 10);
-  await sendQuestionIdToDisplay(Number.isNaN(numericId) ? 255 : numericId);
+  // L'utilisateur est bien en tête de file.
+  // NOTE: On n'envoie PAS aux ESP32 ici. Le worker s'en charge de façon centralisée.
+  // Cela évite les doublons et garantit une synchronisation propre.
 
   const script = `
     (function () {
@@ -326,5 +319,3 @@ export default async function DisplayPage({ searchParams }: DisplayPageProps) {
     </html>
   );
 }
-
-

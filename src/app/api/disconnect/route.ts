@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { redis, safeRedisOperation } from '@/lib/redis';
-import type { QueueEntry } from '@/lib/types';
-import { sendQuestionToWled } from '@/lib/wled';
-import { sendQuestionIdToDisplay } from '@/lib/numberDisplay';
+import { ensureQueueWorkerRunning } from '@/lib/queueWorker';
+
+export const runtime = 'nodejs';
 
 interface DisconnectPayload {
   clientip?: string;
@@ -11,96 +10,40 @@ interface DisconnectPayload {
 }
 
 /**
- * Avance la file d'attente côté Redis :
- * - Lit la tête de file
- * - Si le userId correspond, supprime la tête
+ * API de déconnexion du portail captif.
  *
- * Pour l'instant, c'est aussi l'endroit où l'on préparera
- * l'envoi vers les ESP32 (afficheur 4 digits + bandeau LED).
+ * IMPORTANT: Cette route ne gère PAS le roulement de la file d'attente.
+ * Le worker (queueWorker.ts) est le SEUL responsable de:
+ * - Lire la tête de file
+ * - Envoyer aux ESP32 (WLED + afficheur 4 digits)
+ * - Attendre 30 secondes
+ * - Supprimer la tête de file (LPOP)
+ *
+ * Cette route ne fait que:
+ * - Déconnecter l'utilisateur du portail captif (via openNDS gateway)
+ * - Démarrer le worker si pas déjà fait
  */
-async function advanceQueueIfHeadMatches(userId?: string) {
-  if (!userId) {
-    console.warn('[DISCONNECT-API] No userId provided, skipping queue advancement');
-    return false;
-  }
-
-  return safeRedisOperation(
-    async () => {
-      if (!redis) {
-        throw new Error('Redis client not initialized');
-      }
-
-      const headRaw = await redis.lindex('questions:queue', 0);
-      if (!headRaw) {
-        console.log('[DISCONNECT-API] Queue empty, nothing to advance');
-        return false;
-      }
-
-      let head: QueueEntry | null = null;
-      try {
-        head = JSON.parse(headRaw) as QueueEntry;
-      } catch (error) {
-        console.warn('[DISCONNECT-API] Invalid head entry, removing it', error);
-        await redis.lpop('questions:queue');
-        return false;
-      }
-
-      if (head.userId !== userId) {
-        console.log('[DISCONNECT-API] Head userId does not match, not popping', {
-          expected: userId,
-          actual: head.userId,
-        });
-        return false;
-      }
-
-      await redis.lpop('questions:queue');
-
-      // Préparation pour intégration future avec les ESP32 :
-      // Ici, on a la certitude que "head" est la question qui vient
-      // de terminer son affichage.
-      console.log('[DISCONNECT-API] Advanced queue for userId', userId, {
-        id: head.id,
-        question: head.question,
-        lang: head.lang,
-        category: head.category,
-      });
-
-      // Si la file est maintenant vide, on passe les afficheurs en mode "attente":
-      // - texte EMF sur WLED
-      // - ID 255 sur l'afficheur 4 digits
-      const remainingHead = await redis.lindex('questions:queue', 0);
-      if (!remainingHead) {
-        console.log(
-          '[DISCONNECT-API] Queue is now empty after pop, sending idle state to displays',
-        );
-        await sendQuestionToWled('ECOLE DES METIERS DE FRIBOURG');
-        await sendQuestionIdToDisplay(255);
-      }
-
-      return true;
-    },
-    false,
-    'DISCONNECT advance queue if head matches',
-  );
-}
-
 export async function POST(request: NextRequest) {
+  // S'assurer que le worker tourne
+  ensureQueueWorkerRunning();
+
   const { clientip, clientmac, userId } = (await request.json()) as DisconnectPayload;
 
   console.log('[DISCONNECT-API] Request:', { userId, clientip, clientmac });
 
+  // Si pas d'identifiant gateway, on ne peut pas déconnecter mais ce n'est pas une erreur
   if (!clientip && !clientmac) {
-    console.error('[DISCONNECT-API] Missing identifier (clientip/clientmac)');
-    return NextResponse.json(
-      { success: false, error: 'Missing identifier' },
-      { status: 400 },
-    );
+    console.log('[DISCONNECT-API] No gateway identifier, nothing to disconnect');
+    return NextResponse.json({
+      success: true,
+      message: 'No gateway identifier provided, nothing to disconnect',
+    });
   }
 
   const gateway = process.env.OPENNDS_GATEWAY || '192.168.1.1';
   const url = `http://${gateway}/cgi-bin/disconnect.cgi`;
 
-  console.log('[DISCONNECT-API] Calling:', url);
+  console.log('[DISCONNECT-API] Calling gateway:', url);
 
   try {
     const response = await fetch(url, {
@@ -117,25 +60,18 @@ export async function POST(request: NextRequest) {
       console.warn('[DISCONNECT-API] Gateway response is not valid JSON');
     }
 
-    console.log('[DISCONNECT-API] Response:', data);
-
-    // Avance la file une fois la tentative de déconnexion envoyée
-    const advanced = await advanceQueueIfHeadMatches(userId);
-    console.log('[DISCONNECT-API] Queue advanced:', advanced);
+    console.log('[DISCONNECT-API] Gateway response:', data);
 
     return NextResponse.json({
       success: true,
-      message: 'Client disconnected',
+      message: 'Client disconnected from gateway',
       data,
     });
   } catch (error) {
-    console.error('[DISCONNECT-API] Error while calling gateway:', error);
+    console.error('[DISCONNECT-API] Error calling gateway:', error);
 
-    // Même en cas d'erreur gateway, on tente quand même d'avancer la file
-    const advanced = await advanceQueueIfHeadMatches(userId);
-    console.log('[DISCONNECT-API] Queue advanced (gateway error case):', advanced);
-
-    // On renvoie quand même success: true pour ne pas bloquer l’UX côté portail
+    // On renvoie quand même success: true pour ne pas bloquer l'UX côté portail
+    // L'erreur gateway n'est pas critique pour l'utilisateur
     return NextResponse.json({
       success: true,
       message: 'Client disconnect attempted, but gateway error occurred',

@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid';
+import { ensureQueueWorkerRunning } from '@/lib/queueWorker';
 import { redis, redisAvailable, safeRedisOperation } from '@/lib/redis';
 import questionsDataJson from '@/../data/questions.json';
 import type { QueueEntry, QuestionsData } from '@/lib/types';
@@ -100,6 +101,9 @@ interface QueuePageProps {
 }
 
 export default async function QueuePage({ searchParams }: QueuePageProps) {
+  // Déclenchement explicite du worker (idempotent), sans bootstrap auto-import.
+  ensureQueueWorkerRunning();
+
   const userId = searchParams.userId;
   const langParam = searchParams.lang;
   const category = searchParams.category;
