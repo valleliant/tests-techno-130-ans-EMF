@@ -1,12 +1,12 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/questions/list/page": "app/questions/list/page.js",
   "/page": "app/page.js",
-  "/questions/categories/page": "app/questions/categories/page.js",
   "/questions/display/page": "app/questions/display/page.js",
-  "/questions/queue/page": "app/questions/queue/page.js",
+  "/questions/categories/page": "app/questions/categories/page.js",
+  "/questions/list/page": "app/questions/list/page.js",
   "/questions/page": "app/questions/page.js",
-  "/api/disconnect/route": "app/api/disconnect/route.js",
+  "/questions/queue/page": "app/questions/queue/page.js",
   "/api/test-esp32/route": "app/api/test-esp32/route.js",
+  "/api/disconnect/route": "app/api/disconnect/route.js",
   "/api/queue-status/route": "app/api/queue-status/route.js"
 }
