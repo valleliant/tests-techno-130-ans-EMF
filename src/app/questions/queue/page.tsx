@@ -296,7 +296,7 @@ export default async function QueuePage({ searchParams }: QueuePageProps) {
     );
   }
 
-  const estimatedTimeSeconds = position * 30;
+  const estimatedTimeSeconds = position * 70;
   const minutes = Math.floor(estimatedTimeSeconds / 60);
   const seconds = estimatedTimeSeconds % 60;
 

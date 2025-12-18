@@ -33,8 +33,12 @@ export async function sendQuestionToWled(textInput: string): Promise<boolean> {
   }
 
   const normalized = normalizeForLed(textInput);
-  const text =
-    normalized.length > 64 ? `${normalized.slice(0, 61).trimEnd()}...` : normalized;
+  // Tronquer si trop long, sinon garder tel quel
+  const truncated = normalized.length > 64 
+    ? `${normalized.slice(0, 61).trimEnd()}...` 
+    : normalized;
+  // Compléter avec des espaces pour atteindre 64 caractères (évite que le texte boucle)
+  const text = truncated.padEnd(64, ' ');
 
   console.log('[WLED] Sending text:', {
     url,
@@ -46,15 +50,17 @@ export async function sendQuestionToWled(textInput: string): Promise<boolean> {
   const payload = {
     on: true,
     bri: 255,
+    // Pas de fondu entre anciens/nouveaux états (évite l'effet de "trainée" lors des updates)
+    transition: 0,
     mainseg: 0,
     seg: [
       {
         id: 0,
         start: 0,
-        stop: 32,
+        stop: 224,
         startY: 0,
-        stopY: 8,
-        grp: 1,
+        stopY: 16,
+        grp: 2,
         spc: 0,
         of: 0,
         on: true,
@@ -65,15 +71,16 @@ export async function sendQuestionToWled(textInput: string): Promise<boolean> {
         // Texte à afficher
         n: text,
         col: [
-          [77, 166, 255],
+          [149, 255, 0],
           [0, 0, 0],
           [0, 0, 0],
         ],
         // Effet 122 = Scrolling Text
         fx: 122,
-        sx: 200,
+        // Vitesse de défilement (~2x vs 128, plafonné à 255)
+        sx: 255,
         ix: 128,
-        pal: 0,
+        pal: 11,
         c1: 0,
         c2: 128,
         c3: 16,
@@ -89,6 +96,7 @@ export async function sendQuestionToWled(textInput: string): Promise<boolean> {
         si: 0,
         m12: 0,
       },
+      ...Array.from({ length: 31 }, () => ({ stop: 0 })),
     ],
   };
 

@@ -99,13 +99,13 @@ const messages = {
   fr: {
     title: 'Votre question est affichée !',
     badge: '🎉 EN COURS D\'AFFICHAGE',
-    disconnectInfo: 'Vous serez automatiquement déconnecté dans 30 secondes.',
+    disconnectInfo: 'Vous serez automatiquement déconnecté dans 70 secondes.',
     thankYou: '✅ Merci ! Vous allez être déconnecté...',
   },
   de: {
     title: 'Ihre Frage wird angezeigt!',
     badge: '🎉 WIRD ANGEZEIGT',
-    disconnectInfo: 'Sie werden in 30 Sekunden automatisch getrennt.',
+    disconnectInfo: 'Sie werden in 70 Sekunden automatisch getrennt.',
     thankYou: '✅ Danke! Sie werden jetzt getrennt...',
   },
 };
@@ -237,7 +237,7 @@ export default async function DisplayPage({ searchParams }: DisplayPageProps) {
 
   const script = `
     (function () {
-      var total = 30;
+      var total = 70;
       var timeRemaining = total;
       var timerEl = document.getElementById('timer');
       var progressEl = document.getElementById('progress');
@@ -303,7 +303,7 @@ export default async function DisplayPage({ searchParams }: DisplayPageProps) {
             <h1 className="title">{msg.title}</h1>
             <div className="question-box">« {currentEntry.question} »</div>
             <div className="timer-label">Temps restant</div>
-            <div className="timer" id="timer">30s</div>
+            <div className="timer" id="timer">70s</div>
             <div className="progress-container">
               <div className="progress-bar" id="progress" />
             </div>

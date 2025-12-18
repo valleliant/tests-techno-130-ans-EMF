@@ -3,64 +3,64 @@
     "metiers_actuels": [
       {
         "id": "1",
-        "question": "En quelle année le métier d'électronicien a débuté ?",
+        "question": "En quelle année a débuté le métier d'électronicien ?",
         "reponse_detaillee": "1977, début de la formation de mécanicien-électronicien"
       }
     ],
     "histoire_ecole": [
       {
         "id": "3",
-        "question": "Un internat a été ouvert au Technicum en raison de l'augmentation des élèves. Vrai ou Faux?",
+        "question": "Un internat a ouvert au Technicum en 1906. Vrai ou Faux ?",
         "reponse_detaillee": "Vrai, l'internat a été ouvert en 1906."
       },
       {
         "id": "5",
-        "question": "Le Technicum a été occupé par les militaires en mai 1950. Vrai ou Faux?",
+        "question": "Le Technicum occupé par l'armée en mai 1950. V ou F ?",
         "reponse_detaillee": "Faux, en mai 1940."
       },
       {
         "id": "7",
-        "question": "Le Technicum rassemblait l'école des métiers et l'EIF depuis 1901. Vrai ou Faux?",
+        "question": "Le Technicum unissait EMF et EIF depuis 1901. V ou F ?",
         "reponse_detaillee": "Vrai, jusqu'en 1989."
       },
       {
         "id": "9",
-        "question": "L'autonomie administrative de l'EMF date de 1979. Vrai ou Faux?",
+        "question": "L'autonomie de l'EMF date de 1979. Vrai ou Faux ?",
         "reponse_detaillee": "Faux, elle date de 1989 et l'école devient complètement autonome en 1991."
       },
       {
         "id": "11",
-        "question": "Combien de signatures a récolté la pétition contre le bâtiment EMF Eisenherz en 2006?",
+        "question": "Combien de signatures contre le bâtiment Eisenherz 2006 ?",
         "reponse_detaillee": "1685 signatures pour préserver un séquoia de 60 ans nommé « arbre mammouth »."
       },
       {
         "id": "13",
-        "question": "Quand a eu lieu la première rentré des radioélectricien ? a) 1955 b) 1956 c) 1957 d)1958",
+        "question": "Première rentrée radioélectricien ? a)1955 b)1956 c)1957 d)1958",
         "reponse_detaillee": "1956"
       },
       {
         "id": "15",
-        "question": "Quand a eu lieu la première rentrée dans Eisenherz ? a) 2010 b) 2011 c) 2012 d) 2013",
+        "question": "Première rentrée dans Eisenherz ? a)2010 b)2011 c)2012 d)2013",
         "reponse_detaillee": "2012"
       },
       {
         "id": "17",
-        "question": "Quand ont été créés les nouveaux ateliers d'école pour les dessinateurs en machines ?",
+        "question": "Création ateliers dessinateurs en machines ? Année ?",
         "reponse_detaillee": "1958"
       },
       {
         "id": "19",
-        "question": "En quelle année l'école a-t-elle quitté le Technicum ? a) 1896b) 1901c) 1989d) 2004",
+        "question": "L'école quitte le Technicum ? a)1896 b)1901 c)1989 d)2004",
         "reponse_detaillee": "1989"
       },
       {
         "id": "21",
-        "question": "Combien de projets ont été déposés pour le concours d'architecture du site EMF en 2004 ?",
+        "question": "Combien de projets au concours architecture EMF 2004 ?",
         "reponse_detaillee": "54 projets"
       },
       {
         "id": "23",
-        "question": "Quel pourcentage de la population a approuvé le nouveau bâtiment de l'EMF en 2005 ?",
+        "question": "Quel % a approuvé le nouveau bâtiment EMF en 2005 ?",
         "reponse_detaillee": "80%"
       },
       {
@@ -70,12 +70,12 @@
       },
       {
         "id": "27",
-        "question": "Depuis quand l'école est-elle devenue autonome sur le plan comptable ?",
+        "question": "Depuis quand l'école est autonome comptablement ?",
         "reponse_detaillee": "1991"
       },
       {
         "id": "29",
-        "question": "En quelle année une crèche temporaire a-t-elle été créée au sein de L'EMF ?",
+        "question": "En quelle année une crèche temporaire a ouvert à l'EMF ?",
         "reponse_detaillee": "2020, pour permettre aux professeurs de donner cours à distance avec leurs enfants."
       },
       {
@@ -85,12 +85,12 @@
       },
       {
         "id": "33",
-        "question": "En quelle année l'école s'est-elle installée à Villaz-St-Pierre (atelier Polymécanicien) ?",
+        "question": "Installation à Villaz-St-Pierre (atelier Polymec) ? Année ?",
         "reponse_detaillee": "2003"
       },
       {
         "id": "35",
-        "question": "En quelle année les locaux des Daillettes ont-ils accueilli leurs premiers apprentis??",
+        "question": "Premiers apprentis aux Daillettes ? Quelle année ?",
         "reponse_detaillee": "2014"
       },
       {
@@ -107,318 +107,318 @@
     "personnalites_illustres": [
       {
         "id": "41",
-        "question": "Combien d'années Léon Genoud a-t-il occupé la direction du Technicum (EMF) ?",
+        "question": "Combien d'années Léon Genoud a dirigé le Technicum ?",
         "reponse_detaillee": "30 ans, jusqu'en 1925"
       },
       {
         "id": "42",
-        "question": "Pendant combien d'années l'artiste Ferdinand Hodler a-t-il enseigné à l'EMF ?",
+        "question": "Combien d'années Ferdinand Hodler a enseigné à l'EMF ?",
         "reponse_detaillee": "3 ans/ (1896-1899)"
       },
       {
         "id": "43",
-        "question": "Où se situe Edmond Brasey Paul dans la liste chronologique des directeurs du Technicum ?",
+        "question": "Edmond Brasey Paul : quelle position dans les directeurs ?",
         "reponse_detaillee": "Il se situe en 3ème position"
       },
       {
         "id": "44",
-        "question": "En quelle année l'abbé Léon Barbey a-t-il institué les branches éliminatoires à l'EMF ?",
+        "question": "Abbé Barbey institue branches éliminatoires ? Année ?",
         "reponse_detaillee": "1941"
       },
       {
         "id": "45",
-        "question": "En quelle année Jean-Marie Gobet a-t-il commencé son mandat en tant que directeur de l'EMF ?",
+        "question": "Jean-Marie Gobet devient directeur EMF ? Année ?",
         "reponse_detaillee": "1974"
       },
       {
         "id": "46",
-        "question": "En quelle année François Hemmer a-t-il ouvert une section allemande à l'EMF ?",
+        "question": "François Hemmer ouvre section allemande EMF ? Année ?",
         "reponse_detaillee": "1981"
       },
       {
         "id": "47",
-        "question": "En quelle année a eu lieu la séparation entre l'EMF et l'école d'ingénieurs ?",
+        "question": "Séparation entre EMF et école d'ingénieurs ? Année ?",
         "reponse_detaillee": "1987"
       },
       {
         "id": "48",
-        "question": "Quel grand projet a été terminé en 1991 par les étudiants de l'EMF et en combiens d'années?",
+        "question": "Quel grand projet terminé en 1991 et en combien d'années ?",
         "reponse_detaillee": "4 ans, ils ont terminé le développement d'une CNC scieuse de métal"
       },
       {
         "id": "49",
-        "question": "Quelle grande entreprise s'est intéressée à la machine d'encapsulation ?",
+        "question": "Quelle entreprise s'intéresse à la machine encapsulation ?",
         "reponse_detaillee": "En 2002 la NASA s'est intéressée à cette machine."
       },
       {
         "id": "50",
-        "question": "Combien de breuvages différents étaient proposés par le barman robotique de l'EMF ?",
+        "question": "Combien de breuvages proposés par le barman robotique ?",
         "reponse_detaillee": "Il proposait 40 breuvages différents."
       },
       {
         "id": "51",
-        "question": "Qui a développé la centrale hydroélectrique Pico+ destinée aux pays en voie de développement ?",
+        "question": "Qui a développé la centrale hydroélectrique Pico+ ?",
         "reponse_detaillee": "Elle a été développée en 2006 par les étudiants de l'EMF et AZ ingénierie SA."
       },
       {
         "id": "52",
-        "question": "Quelle puissance développe le pico+ (centrale hydroélectrique pour les pays en développment) ?",
+        "question": "Quelle puissance développe le Pico+ ?",
         "reponse_detaillee": "Le pico+ développe une puissance de 250 watts."
       },
       {
         "id": "53",
-        "question": "Quelle est la longueur des rails du projet « Funiculaire 2007 » ?",
+        "question": "Longueur des rails du projet Funiculaire 2007 ?",
         "reponse_detaillee": "La longueur des rails est de 140 cm."
       },
       {
         "id": "54",
-        "question": "Combien ont dépensé les élèves pour la fabrication de la maquette du funiculaire ?",
+        "question": "Coût de fabrication de la maquette du funiculaire ?",
         "reponse_detaillee": "Ils ont dépensé 1000 francs"
       },
       {
         "id": "55",
-        "question": "En 2012, à quel rang Marc Denervaud s'est-il classé aux championnats Romands en informatique?",
+        "question": "Rang Marc Denervaud championnats Romands info 2012 ?",
         "reponse_detaillee": "Marc Denervaud a fini 1er dans le domaine « techniques réseaux »."
       },
       {
         "id": "56",
-        "question": "Qui a occupé la 3ème place aux championnats Romands dans le domaine développement d'application?",
+        "question": "3e place championnats Romands dev d'application ?",
         "reponse_detaillee": "Joëlle Perritaz a décroché la 3ème place en 2012 dans le domaine « développement d'application »."
       },
       {
         "id": "57",
-        "question": "En quelle année Estelle Leyrolles a-t-elle pris la direction ?",
+        "question": "En quelle année Estelle Leyrolles a pris la direction ?",
         "reponse_detaillee": "2019"
       },
       {
         "id": "58",
-        "question": "Pendant combien de temps la voiture à hydrogène des dZodZet a-t-elle roulé ?",
+        "question": "Durée de roulage de la voiture à hydrogène dZodZet ?",
         "reponse_detaillee": "Elle a roulé pendant 24 heures."
       },
       {
         "id": "59",
-        "question": "En quelle année Salih Schmid Kilic a-t-il tout quitté pour se lancer dans la mode ?",
+        "question": "Salih Schmid Kilic se lance dans la mode ? Année ?",
         "reponse_detaillee": "En 2019, à 34 ans, Salih Schmid Kilic créé la marque Waldstätten."
       },
       {
         "id": "60",
-        "question": "Comment le mini-satellite a-t-il pu atteindre les nuages et a quelle hauteur (m)?",
+        "question": "Comment le mini-satellite atteint les nuages (hauteur) ?",
         "reponse_detaillee": "Il a atteint 1000 m de haut grâce aux ballons sondes de Météo Suisse."
       },
       {
         "id": "61",
-        "question": "Qui a remporté l'argent aux SwissSkills Championship et en quelle année ?",
+        "question": "Qui a l'argent aux SwissSkills 2020 ?",
         "reponse_detaillee": "En 2020, Damien Keller, apprenti électronicien, a remporté la 2ème place au SwissSkills"
       }
     ],
     "anciens_metiers": [
       {
         "id": "62",
-        "question": "En quelle année la formation des tailleurs de pierre a-t-elle été suprimée?",
+        "question": "Suppression formation tailleurs de pierre ? Année ?",
         "reponse_detaillee": "1919"
       },
       {
         "id": "63",
-        "question": "En quelle année la section \"Droguiste\" a-t-elle été inaugurée?",
+        "question": "Inauguration section Droguiste ? Année ?",
         "reponse_detaillee": "1904"
       },
       {
         "id": "64",
-        "question": "Quel était la pourcentage d'élèves venant de l'étranger en 1903 à l'EMF?",
+        "question": "Quel % d'élèves étrangers à l'EMF en 1903 ?",
         "reponse_detaillee": "10% des étudiets"
       },
       {
         "id": "65",
-        "question": "Combien y avait-il d'apprentis premier semestre 1896?",
+        "question": "Combien d'apprentis au 1er semestre 1896 ?",
         "reponse_detaillee": "14 apprentis"
       },
       {
         "id": "66",
-        "question": "Pendant combien d'années l'apprentisage de vannier a-t-il existé à l'EMF?",
+        "question": "Combien d'années apprentissage de vannier à l'EMF ?",
         "reponse_detaillee": "1896-1900"
       },
       {
         "id": "67",
-        "question": "Quel montant le Grand Conseil a-t-il approuvé pour un nouveau bâtiment en 1900 (CHF)?",
+        "question": "Montant Grand Conseil pour nouveau bâtiment 1900 (CHF) ?",
         "reponse_detaillee": "100'000 CHF"
       },
       {
         "id": "68",
-        "question": "Quel était le montant du prêt nécessaire pour former des polymécaniciens (mio. CHF)?",
+        "question": "Prêt pour former polymécaniciens (mio. CHF) ?",
         "reponse_detaillee": "4 Mio CHF"
       },
       {
         "id": "69",
-        "question": "Combien d'années d'études pour obtenir le diplôme de maîtresse brodeuse en 1902?",
+        "question": "Années d'études pour diplôme maîtresse brodeuse 1902 ?",
         "reponse_detaillee": "4"
       },
       {
         "id": "70",
-        "question": "En qulle année a été ouvert l'atelier radioélectrique au technicum?",
+        "question": "Ouverture atelier radioélectrique au Technicum ? Année ?",
         "reponse_detaillee": "1956"
       },
       {
         "id": "71",
-        "question": "Combien d'apprentis tailleurs de pierre comptait la premiére volée en 1896?",
+        "question": "Combien apprentis tailleurs pierre 1ère volée 1896 ?",
         "reponse_detaillee": "12"
       },
       {
         "id": "72",
-        "question": "En qulle année la section Télécommunications a-t-elle été crée au technicum?",
+        "question": "Création section Télécommunications Technicum ? Année ?",
         "reponse_detaillee": "1992"
       },
       {
         "id": "73",
-        "question": "Combien de formations étaient prévus dans la loi de 1903 ?",
+        "question": "Combien de formations prévues dans la loi de 1903 ?",
         "reponse_detaillee": "8"
       },
       {
         "id": "74",
-        "question": "Combien d'années de chantier fallait-il pour entrer à l'École de chefs de chantier dès 1970?",
+        "question": "Années chantier requises École chefs chantier dès 1970 ?",
         "reponse_detaillee": "1 année"
       },
       {
         "id": "75",
-        "question": "Depuis quand la section chimie existe-t-elle à l'École d'Ingénieurs a Fribourg?",
+        "question": "Depuis quand section chimie École Ingénieurs Fribourg ?",
         "reponse_detaillee": "1974, Cours à  mathematique et mecanique"
       },
       {
         "id": "76",
-        "question": "Combien de filières d'ingenieurs l'école proposait-elle en 1999?",
+        "question": "Combien de filières d'ingénieurs en 1999 ?",
         "reponse_detaillee": "6"
       },
       {
         "id": "77",
-        "question": "Combien de temps a pris la construction du bâtiment actuel de la HEIA-FR?",
+        "question": "Durée construction bâtiment actuel HEIA-FR (années) ?",
         "reponse_detaillee": "4"
       },
       {
         "id": "78",
-        "question": "En quelle année est mort le fondateur de l'école et par ailleurs le 1er directeur?",
+        "question": "Décès du fondateur et 1er directeur ? Année ?",
         "reponse_detaillee": "1926, Léon Genoud"
       },
       {
         "id": "79",
-        "question": "Combien de diplômes professionels ont été décernés à l'EMF en 1921?",
+        "question": "Combien de diplômes professionnels décernés EMF 1921 ?",
         "reponse_detaillee": "202"
       },
       {
         "id": "80",
-        "question": "Combien d'étudiants de l'EMF 1921 venaient de la ville de Fribourg?",
+        "question": "Combien d'étudiants EMF 1921 de la ville Fribourg ?",
         "reponse_detaillee": "143"
       }
     ],
     "histoire_metiers_actuels": [
       {
         "id": "101",
-        "question": "Quelle est la date à laquelle l'EMF a accueilli ses premiers apprentis?",
+        "question": "Date d'accueil des premiers apprentis à l'EMF ?",
         "reponse_detaillee": "18.01.1896"
       },
       {
         "id": "103",
-        "question": "Combien d'apprentis l'EMF a-t-elle accueillis lors de son ouverture en 1896 ?",
+        "question": "Combien d'apprentis à l'ouverture EMF en 1896 ?",
         "reponse_detaillee": "14"
       },
       {
         "id": "105",
-        "question": "En quelle année la formation d'électricien a-t-elle commencé à l'EMF?",
+        "question": "Début formation d'électricien à l'EMF ? Année ?",
         "reponse_detaillee": "1987"
       },
       {
         "id": "107",
-        "question": "En quelle année la formation d'automaticien a-t-elle commencé à l'EMF?",
+        "question": "Début formation d'automaticien à l'EMF ? Année ?",
         "reponse_detaillee": "1987"
       },
       {
         "id": "109",
-        "question": "En quelle année la maturité professionnelle MP1 a-t-elle commencé à l'EMF?",
+        "question": "Début de la maturité professionnelle MP1 EMF ? Année ?",
         "reponse_detaillee": "1992"
       },
       {
         "id": "111",
-        "question": "En quelle année la maturité post-CFC MP2 a-t-elle été introduite à l'EMF?",
+        "question": "Introduction maturité post-CFC MP2 à l'EMF ? Année ?",
         "reponse_detaillee": "1995"
       },
       {
         "id": "113",
-        "question": "En quelle année la formation d'informaticien a-t-elle commencé à l'EMF?",
+        "question": "Début formation d'informaticien à l'EMF ? Année ?",
         "reponse_detaillee": "2000"
       },
       {
         "id": "115",
-        "question": "Combien d'apprentis ont obtenu la maturité technique en 2000?",
+        "question": "Combien d'apprentis maturité technique en 2000 ?",
         "reponse_detaillee": "173"
       },
       {
         "id": "117",
-        "question": "En quelle année la formation de polymécanicien a-t-elle commencé à l'EMF?",
+        "question": "Début formation de polymécanicien EMF ? Année ?",
         "reponse_detaillee": "2003"
       },
       {
         "id": "119",
-        "question": "Quel % des apprentis techniques ont obtenu la maturité en 2005?",
+        "question": "Quel % apprentis techniques ont maturité en 2005 ?",
         "reponse_detaillee": "91"
       },
       {
         "id": "121",
-        "question": "Quel % des apprentis techniques étaient des filles en 2005?",
+        "question": "Quel % d'apprentis techniques filles en 2005 ?",
         "reponse_detaillee": "3"
       },
       {
         "id": "123",
-        "question": "Quand le bâtiment Eisenherz a-t-il été inauguré?",
+        "question": "Inauguration du bâtiment Eisenherz ? Année ?",
         "reponse_detaillee": "2011"
       },
       {
         "id": "125",
-        "question": "Quand ont commencé les cours de maturité bilingue?",
+        "question": "Début des cours de maturité bilingue ? Année ?",
         "reponse_detaillee": "2017"
       },
       {
         "id": "127",
-        "question": "Quand la maturité MP2 en emploi a-t-elle été introduite à l'EMF?",
+        "question": "Introduction MP2 en emploi à l'EMF ? Année ?",
         "reponse_detaillee": "2021"
       },
       {
         "id": "129",
-        "question": "Combien d'élèves y avait-il la première année de la MP2?",
+        "question": "Combien d'élèves la première année de la MP2 ?",
         "reponse_detaillee": "48"
       },
       {
         "id": "131",
-        "question": "Combien de collaborateurs comptait l'EMF en 2022?",
+        "question": "Combien de collaborateurs à l'EMF en 2022 ?",
         "reponse_detaillee": "105"
       },
       {
         "id": "133",
-        "question": "Combien de jours de cours pour la maturité en une année?",
+        "question": "Combien de jours de cours maturité en 1 an ?",
         "reponse_detaillee": "190"
       },
       {
         "id": "135",
-        "question": "Combien de jours de cours pour la maturité en deux ans?",
+        "question": "Combien de jours de cours maturité en 2 ans ?",
         "reponse_detaillee": "152"
       },
       {
         "id": "137",
-        "question": "Combien d'élèves font le CFC avec MP1 intégrée en 2025?",
+        "question": "Combien d'élèves font CFC avec MP1 en 2025 ?",
         "reponse_detaillee": "460"
       },
       {
         "id": "139",
-        "question": "Combien de collaborateurs travaillent à l'EMF en 2025?",
+        "question": "Combien de collaborateurs à l'EMF en 2025 ?",
         "reponse_detaillee": "110"
       }
     ],
     "emf_histoire_ville": [
       {
         "id": "141",
-        "question": "Pourquoi Leon Genoud s'est-il engagé à l'époque de l'industrialisation de Fribourg ?",
+        "question": "Pourquoi Leon Genoud s'engage à l'industrialisation ?",
         "reponse_detaillee": "Pour pallier le manque d'éducation des Fribourgeois et pour la construction de l'EMF."
       },
       {
         "id": "143",
-        "question": "Combien d'autres établissements de formation existaient déjà en 1896, à la création de l'EMF ?",
+        "question": "Combien d'établissements formation existaient déjà 1896 ?",
         "reponse_detaillee": "L'École des Métiers a été la première du genre."
       },
       {
@@ -428,87 +428,87 @@
       },
       {
         "id": "147",
-        "question": "Combien de Fribourgeois étaient pour la construction du nouveau bâtiment de l'EMF le 25.09.05 ?",
+        "question": "% Fribourgeois pour nouveau bâtiment EMF le 25.09.05 ?",
         "reponse_detaillee": "La proposition d'investissement de 26 millions de francs a été acceptée par 81% de oui."
       },
       {
         "id": "149",
-        "question": "Qui gagna le concours d'architecture pour la construction du nouveau bâtiment de l'EMF en 2004 ?",
+        "question": "Qui gagne concours architecture nouveau bâtiment 2004 ?",
         "reponse_detaillee": "La société Graber Pulver SA, fondée en 1992."
       },
       {
         "id": "151",
-        "question": "En quelle année et comment des élèves de l'EMF ont rendu hommage au funiculaire de Fribourg ?",
+        "question": "Comment EMF rend hommage au funiculaire en 2007 ?",
         "reponse_detaillee": "En 2007, en construisant un modèle réduit fonctionnel."
       },
       {
         "id": "153",
-        "question": "Pourquoi le plateau de Pérolles a-t-il été choisi pour accueillir le nouveau bâtiment de l'EMF ?",
+        "question": "Pourquoi plateau Pérolles pour nouveau bâtiment EMF ?",
         "reponse_detaillee": "Pour rassembler l'EMF, la HEIA-FR et d'autres écoles techniques."
       },
       {
         "id": "155",
-        "question": "En 22 ans, de combien d'habitants la population de Fribourg a augmenté grâce aux industries ?",
+        "question": "Augmentation population Fribourg en 22 ans (habitants) ?",
         "reponse_detaillee": "En 1910, la ville de Fribourg comptait 8000 habitants en plus."
       },
       {
         "id": "157",
-        "question": "Quelle était la relation entre la Société des Eaux et Forêts et l'ancien Technicum ?",
+        "question": "Relation Société Eaux-Forêts et ancien Technicum ?",
         "reponse_detaillee": "En 1898, les élèves travaillaient pour la société dans le domaine de l'électricité."
       },
       {
         "id": "159",
-        "question": "Quel est le lien entre l'actuel FC Fribourg et l'ancienne école technique ?",
+        "question": "Lien entre FC Fribourg actuel et ancienne école ?",
         "reponse_detaillee": "En 1900, 9 étudiants fondèrent le club FC Technicum, qui est devenu le FC Fribourg."
       },
       {
         "id": "161",
-        "question": "Combien de places de stage l'EMF proposait pour les femmes dans les métiers techniques ?",
+        "question": "Combien places stage femmes métiers techniques EMF ?",
         "reponse_detaillee": "En 2012, l'EMF et la ville de Fribourg proposait déjà 280 places."
       },
       {
         "id": "163",
-        "question": "Depuis quelle année existe-t-il un système de formation bilingue à l'EMF ?",
+        "question": "Depuis quand système formation bilingue à l'EMF ?",
         "reponse_detaillee": "Depuis 1995, les formations sont bilingues."
       },
       {
         "id": "165",
-        "question": "Comment les formations de l'EMF ont-elles changées pour s'adapter aux besoins de Fribourg ?",
+        "question": "Comment formations EMF adaptées besoins Fribourg ?",
         "reponse_detaillee": "En 2000, une nouvelle formation d'informaticien voit le jour."
       },
       {
         "id": "167",
-        "question": "Pourquoi la ligne ferroviaire traversant Fribourg joue-t-elle un rôle important pour l'EMF ?",
+        "question": "Pourquoi ligne ferroviaire importante pour l'EMF ?",
         "reponse_detaillee": "Avec elle arrivent les premières industries dans la ville et l'intérêt pour la technique."
       },
       {
         "id": "169",
-        "question": "En quelle année à été inaugurée la ligne de tram Gare-Pérolles ?",
+        "question": "Inauguration ligne tram Gare-Pérolles ? Année ?",
         "reponse_detaillee": "En 1900, 3 ans après l'inauguration de la première ligne."
       },
       {
         "id": "171",
-        "question": "Quelle ligne de bus TPF s'arrête aujourd'hui devant l'EMF ?",
+        "question": "Quelle ligne de bus TPF s'arrête devant l'EMF ?",
         "reponse_detaillee": "La ligne 9"
       },
       {
         "id": "173",
-        "question": "Combien d'élèves les TPF transportent-ils aujourd'hui à Fribourg ?",
+        "question": "Combien d'élèves transportés quotidien par TPF ?",
         "reponse_detaillee": "Les TPF transportent chaque jour 16'000 élèves grâce à leurs 73 lignes de bus."
       },
       {
         "id": "175",
-        "question": "Quand le Conseil d'Etat décide d'intégrer le plateau de Pérolles à la ville de Fribourg ?",
+        "question": "Intégration plateau Pérolles à Fribourg ? Date ?",
         "reponse_detaillee": "Le 2 mars 1906, pour résoudre le conflit entre Villars-sur-Glâne et Fribourg."
       },
       {
         "id": "177",
-        "question": "Quel est le point fort du plateau de Pérolles à Fribourg ?",
+        "question": "Quel est le point fort du plateau de Pérolles ?",
         "reponse_detaillee": "Depuis 100 ans, c'est le cœur de la formation professionnelle technique."
       },
       {
         "id": "179",
-        "question": "Jusqu'à quand et comment a été remblayé le vallon de Pérolles ?",
+        "question": "Jusqu'à quand remblayage vallon de Pérolles ?",
         "reponse_detaillee": "Jusqu'en 1952 avec des ordures ménagères."
       }
     ]
@@ -517,69 +517,69 @@
     "aktuelle_berufe": [
       {
         "id": "2",
-        "question": "In welchem Jahr hat der Beruf des Elektronikers begonnen?",
+        "question": "In welchem Jahr begann der Beruf des Elektronikers?",
         "reponse_detaillee": "1977, Beginn der Ausbildung zum Mechaniker-Elektroniker"
       }
     ],
     "geschichte_schule": [
       {
         "id": "4",
-        "question": "Ein Internat wurde im Technicum wegen steigender Schülerzahl eröffnet. Wahr oder Falsch?",
+        "question": "Internat im Technicum 1906 eröffnet. Wahr oder Falsch?",
         "reponse_detaillee": "Wahr, das Internat wurde 1906 eröffnet."
       },
       {
         "id": "6",
-        "question": "Das Technicum wurde im Mai 1950 vom Militär besetzt. Wahr oder Falsch?",
+        "question": "Technicum im Mai 1950 vom Militär besetzt. W oder F?",
         "reponse_detaillee": "Falsch, im Mai 1940."
       },
       {
         "id": "8",
-        "question": "Das Technicum vereinigte seit 1901 die Gewerbeschule und die Ingenieurschule. W oder F?",
+        "question": "Technicum vereinte EMF und EIF seit 1901. W oder F?",
         "reponse_detaillee": "Wahr, bis 1989."
       },
       {
         "id": "10",
-        "question": "Die administrative Autonomie der EMF stammt aus dem Jahr 1979. Wahr oder Falsch?",
+        "question": "Administrative Autonomie EMF stammt aus 1979. W oder F?",
         "reponse_detaillee": "Falsch, seit 1989 autonom, vollständig seit 1991."
       },
       {
         "id": "12",
-        "question": "Wie viele Unterschriften gab es gegen den Bau des EMF Eisenherz 2006?",
+        "question": "Unterschriften gegen Bau EMF Eisenherz 2006?",
         "reponse_detaillee": "1685, um eine Baumgruppe mit einem 60-jährigen Mammutbaum zu schützen."
       },
       {
         "id": "14",
-        "question": "Wann wurde die Abteilung für Radioelektriker eröffnet? a) 1955 b) 1956 c) 1957 d) 1958",
+        "question": "Eröffnung Radioelektriker? a)1955 b)1956 c)1957 d)1958",
         "reponse_detaillee": "1956"
       },
       {
         "id": "16",
-        "question": "Wann fand der erste Schulbeginn im Eisenherz statt? a) 2010 b) 2011 c) 2012 d) 2013",
+        "question": "Schulbeginn Eisenherz? a)2010 b)2011 c)2012 d)2013",
         "reponse_detaillee": "2012"
       },
       {
         "id": "18",
-        "question": "Wann wurden die neuen Schulwerkstätten für Maschinenzeichner geschaffen?",
+        "question": "Neue Werkstätten Maschinenzeichner? Jahr?",
         "reponse_detaillee": "1958"
       },
       {
         "id": "20",
-        "question": "In welchem Jahr hat die Schule das Technicum verlassen?a) 1896b) 1901c) 1989d) 2004",
+        "question": "Schule verlässt Technicum? a)1896 b)1901 c)1989 d)2004",
         "reponse_detaillee": "1989"
       },
       {
         "id": "22",
-        "question": "Wie viele Projekte wurden 2004 für den Architekturwettbewerb am EMF-Standort eingereicht?",
+        "question": "Projekte Architekturwettbewerb EMF 2004?",
         "reponse_detaillee": "54 Projekte."
       },
       {
         "id": "24",
-        "question": "Welcher Prozentsatz der Bevölkerung stimmte 2005 für das neue EMF-Gebäude?",
+        "question": "Welcher % stimmte 2005 für neues EMF-Gebäude?",
         "reponse_detaillee": "80%"
       },
       {
         "id": "26",
-        "question": "Wie hoch war das ursprünglich geplante Budget für dieses Gebäude?",
+        "question": "Ursprünglich geplantes Budget für dieses Gebäude?",
         "reponse_detaillee": "42 Millionen Franken"
       },
       {
@@ -589,22 +589,22 @@
       },
       {
         "id": "30",
-        "question": "Wann wurde eine provisorische Kindertagesstätte in der EMF eingerichtet?",
+        "question": "Provisorische Kita in der EMF? Jahr?",
         "reponse_detaillee": "2020, damit Lehrkräfte mit Kindern Fernunterricht geben konnten."
       },
       {
         "id": "32",
-        "question": "In welchem Jahr wurde das Gebäude Troller eingeweiht?",
+        "question": "Einweihung Gebäude Troller? Jahr?",
         "reponse_detaillee": "1974–75 (gleichzeitig wurde es zum Gebäude für die Berufsmaturität)."
       },
       {
         "id": "34",
-        "question": "In welchem Jahr zog die Schule nach Villaz-St-Pierre (Werkstatt für Polymechaniker) um?",
+        "question": "Umzug nach Villaz-St-Pierre (Polymec-Werkstatt)? Jahr?",
         "reponse_detaillee": "2003"
       },
       {
         "id": "36",
-        "question": "In welchem Jahr empfingen die Räumlichkeiten von Daillettes ihre ersten Auszubildenden?",
+        "question": "Erste Azubis in Daillettes? Jahr?",
         "reponse_detaillee": "2014"
       },
       {
@@ -614,415 +614,415 @@
       },
       {
         "id": "40",
-        "question": "In welchem Jahr trennte sich Eikon von der EMF?",
+        "question": "Trennung Eikon von EMF? Jahr?",
         "reponse_detaillee": "2015"
       }
     ],
     "fruehere_berufe": [
       {
         "id": "81",
-        "question": "In welchem Jahr wurde die Ausbildung zum Steinhauer an der EMF abgeschafft?",
+        "question": "Ausbildung Steinhauer an EMF abgeschafft? Jahr?",
         "reponse_detaillee": "1919"
       },
       {
         "id": "82",
-        "question": "In welchem Jahr wurde das Fachgebiet \"Apotheker\" eingeführt?",
+        "question": "Einführung Fachgebiet Apotheker? Jahr?",
         "reponse_detaillee": "1904"
       },
       {
         "id": "83",
-        "question": "Wieviel Prozent der Schüler der EMF kamen 1903 aus dem Ausland?",
+        "question": "Wieviel % Schüler EMF 1903 aus dem Ausland?",
         "reponse_detaillee": "10% Der Schüler"
       },
       {
         "id": "84",
-        "question": "Wieviele Lehrlinge gab es im ersten Semester 1896?",
+        "question": "Wieviele Lehrlinge im ersten Semester 1896?",
         "reponse_detaillee": "14(12 Steinhauer, 2 Mechaniker)"
       },
       {
         "id": "85",
-        "question": "Wielange gab es den Beruf Korbmacher an der EMF?",
+        "question": "Wielange gab es Beruf Korbmacher an der EMF?",
         "reponse_detaillee": "4"
       },
       {
         "id": "86",
-        "question": "Wie hoch war der Kredit, den der grosse Rat 1900 für einen Neubau genehmigt hat (CHF)?",
+        "question": "Kredit Grosser Rat 1900 für Neubau (CHF)?",
         "reponse_detaillee": "100'000 CHF"
       },
       {
         "id": "87",
-        "question": "Wie hoch war der Kredit, der für die Ausbildung von Polymechanikern gebraucht wurde (mio. CHF)?",
+        "question": "Kredit für Ausbildung Polymechaniker (mio. CHF)?",
         "reponse_detaillee": "4 mio. CHF"
       },
       {
         "id": "88",
-        "question": "Wiviele Jahre musste man studieren, um das Diplom zur Stickermeisterin zu erhalten?",
+        "question": "Jahre Studium für Diplom Stickermeisterin?",
         "reponse_detaillee": "4"
       },
       {
         "id": "89",
-        "question": "In welchem Jahr wurde das Atelier der Radio-Elektrik eröffnet?",
+        "question": "Eröffnung Atelier Radio-Elektrik? Jahr?",
         "reponse_detaillee": "1956"
       },
       {
         "id": "90",
-        "question": "Wieviele Steinhauer-Lehrlinge gab es im ersten Semester?",
+        "question": "Steinhauer-Lehrlinge im ersten Semester?",
         "reponse_detaillee": "12"
       },
       {
         "id": "91",
-        "question": "In welchem Jahr wurde die Studienrichtung \"Telekommunikation\" eingeführt",
+        "question": "Einführung Studienrichtung Telekommunikation? Jahr?",
         "reponse_detaillee": "1992"
       },
       {
         "id": "92",
-        "question": "Wieviele Studiengänge wurden 1903 angeboten an der EMF?",
+        "question": "Wieviele Studiengänge 1903 an der EMF?",
         "reponse_detaillee": "8"
       },
       {
         "id": "93",
-        "question": "Wie viele Jahre Berufserfahrung waren nötig für das Bauleiterstudium ab 1970?",
+        "question": "Jahre Berufserfahrung für Bauleiterstudium ab 1970?",
         "reponse_detaillee": "1"
       },
       {
         "id": "94",
-        "question": "Seit wann gibt es die Chemie-Abteilung an der Ingenieursschule Freiburg?",
+        "question": "Seit wann Chemie-Abteilung Ingenieurschule Freiburg?",
         "reponse_detaillee": "1974"
       },
       {
         "id": "95",
-        "question": "Wieviele Ingenieursstudiengängen bot die HEIA-FR 1999 an?",
+        "question": "Ingenieurstudiengänge HEIA-FR 1999?",
         "reponse_detaillee": "6"
       },
       {
         "id": "96",
-        "question": "Wie lange dauerte der Bau für das heutige Gebäude der HEIA-FR?",
+        "question": "Baudauer heutiges Gebäude HEIA-FR?",
         "reponse_detaillee": "4"
       },
       {
         "id": "97",
-        "question": "In welchem Jahr starb der Gründer der Schule, der zugleich der erste Direktor war?",
+        "question": "Tod Gründer und erster Direktor? Jahr?",
         "reponse_detaillee": "1926"
       },
       {
         "id": "98",
-        "question": "Wie viele Berufsdiplome wurden an der EMF 1921 ausgestellt?",
+        "question": "Berufsdiplome ausgestellt EMF 1921?",
         "reponse_detaillee": "202"
       },
       {
         "id": "99",
-        "question": "Wie viele Schüler der EMF im Jahre 1921 kamen aus der Stadt Freiburg?",
+        "question": "Schüler EMF 1921 aus Stadt Freiburg?",
         "reponse_detaillee": "143"
       }
     ],
     "geschichte_heutigen_berufe": [
       {
         "id": "100",
-        "question": "Was ist das Datum, wo die EMF die ersten Lehrlinge empfangen hat?",
+        "question": "Datum erste Lehrlinge an der EMF?",
         "reponse_detaillee": "18.01.1896"
       },
       {
         "id": "102",
-        "question": "Wie viele Lehrlinge hat die EMF bei der Eröffnung 1896 empfangen?",
+        "question": "Lehrlinge bei Eröffnung EMF 1896?",
         "reponse_detaillee": "1896"
       },
       {
         "id": "104",
-        "question": "Wann wurde der Beruf Elektriker an der EMF eingeführt?",
+        "question": "Beruf Elektriker an EMF eingeführt? Jahr?",
         "reponse_detaillee": "1987"
       },
       {
         "id": "106",
-        "question": "Wann wurde der Beruf Automatiker an der EMF eingeführt?",
+        "question": "Beruf Automatiker an EMF eingeführt? Jahr?",
         "reponse_detaillee": "1987"
       },
       {
         "id": "108",
-        "question": "Wann wurde die Berufsmaturität MP1 an der EMF eingeführt?",
+        "question": "Berufsmaturität MP1 an EMF eingeführt? Jahr?",
         "reponse_detaillee": "1992"
       },
       {
         "id": "110",
-        "question": "Wann wurde die nachträgliche Berufsmaturität MP2 eingeführt?",
+        "question": "Nachträgliche Berufsmaturität MP2 eingeführt? Jahr?",
         "reponse_detaillee": "1995"
       },
       {
         "id": "112",
-        "question": "Wann wurde der Beruf Informatiker an der EMF eingeführt?",
+        "question": "Beruf Informatiker an EMF eingeführt? Jahr?",
         "reponse_detaillee": "2000"
       },
       {
         "id": "114",
-        "question": "Wie viele Lernende machten 2000 die technische Matura?",
+        "question": "Lernende mit technischer Matura 2000?",
         "reponse_detaillee": "173"
       },
       {
         "id": "116",
-        "question": "Wann wurde der Beruf Polymechaniker an der EMF eingeführt?",
+        "question": "Beruf Polymechaniker an EMF eingeführt? Jahr?",
         "reponse_detaillee": "2003"
       },
       {
         "id": "118",
-        "question": "Wie viel % der technischen Lehrlinge machten 2005 die Matura?",
+        "question": "Wieviel % techn. Lehrlinge machten 2005 Matura?",
         "reponse_detaillee": "91"
       },
       {
         "id": "120",
-        "question": "Wie viel % der technischen Lehrlinge waren 2005 Mädchen?",
+        "question": "Wieviel % techn. Lehrlinge waren 2005 Mädchen?",
         "reponse_detaillee": "3"
       },
       {
         "id": "122",
-        "question": "Wann wurde das Gebäude Eisenherz eingeweiht?",
+        "question": "Einweihung Gebäude Eisenherz? Jahr?",
         "reponse_detaillee": "2011"
       },
       {
         "id": "124",
-        "question": "Wann begannen die bilingualen Maturitätskurse an der EMF?",
+        "question": "Beginn bilinguale Maturitätskurse EMF? Jahr?",
         "reponse_detaillee": "2017"
       },
       {
         "id": "126",
-        "question": "Wann wurde die berufsbegleitende Maturität MP2 eingeführt?",
+        "question": "Berufsbegleitende Maturität MP2 eingeführt? Jahr?",
         "reponse_detaillee": "2021"
       },
       {
         "id": "128",
-        "question": "Wie viele Schüler gab es im ersten Jahr der Maturität MP2?",
+        "question": "Schüler im ersten Jahr Maturität MP2?",
         "reponse_detaillee": "48"
       },
       {
         "id": "130",
-        "question": "Wie viele Mitarbeiter hatte die EMF im Jahr 2022?",
+        "question": "Mitarbeiter EMF im Jahr 2022?",
         "reponse_detaillee": "105"
       },
       {
         "id": "132",
-        "question": "Wie viele Tage Unterricht hat man bei der 1-jährigen Matura?",
+        "question": "Unterrichtstage 1-jährige Matura?",
         "reponse_detaillee": "190"
       },
       {
         "id": "134",
-        "question": "Wie viele Tage Unterricht hat man bei der 2-jährigen Matura?",
+        "question": "Unterrichtstage 2-jährige Matura?",
         "reponse_detaillee": "152"
       },
       {
         "id": "136",
-        "question": "Wie viele Schüler machen 2025 das EFZ mit integrierter MP1?",
+        "question": "Schüler machen 2025 EFZ mit integrierter MP1?",
         "reponse_detaillee": "460"
       },
       {
         "id": "138",
-        "question": "Wie viele Mitarbeitende arbeiten 2025 an der EMF?",
+        "question": "Mitarbeitende arbeiten 2025 an der EMF?",
         "reponse_detaillee": "110"
       }
     ],
     "emf_geschichte_stadt": [
       {
         "id": "140",
-        "question": "Für was setzte sich Leon Genoud in der Zeit der Industralisierung von Freiburg ein?",
+        "question": "Wofür setzte Leon Genoud sich ein?",
         "reponse_detaillee": "Er engagierte er sich für die fehlende Bildung der Freibuger und den Bau der EMF."
       },
       {
         "id": "142",
-        "question": "Wieviele andere Ausbildungeinrichtungen gab es 1896 zur Gründung der Ecole des Metiers schon ?",
+        "question": "Ausbildungseinrichtungen 1896 bei Gründung EMF?",
         "reponse_detaillee": "Die Ecole des Metiers war die erste seiner Art."
       },
       {
         "id": "144",
-        "question": "Was spielte das Hotel des Bains für eine Rolle für die EMF ?",
+        "question": "Rolle Hotel des Bains für die EMF?",
         "reponse_detaillee": "Die Schule mietete ein Zimmer für Mathematik Kurse."
       },
       {
         "id": "146",
-        "question": "Wollte die Stadt Freiburg in Neubau der EMF im Pérolles-Plateau am 25.09.05 investieren ?",
+        "question": "Stadt Freiburg für Neubau EMF am 25.09.05?",
         "reponse_detaillee": "Die Vorlage für die Investition für 26Millionen Franken wurde mit 81% Ja akzeptiert."
       },
       {
         "id": "148",
-        "question": "Wer gewann den Architekturwettbewerb für die konstruktion der neuen EMF-Gebäude 2004 ?",
+        "question": "Gewinner Architekturwettbewerb neue EMF 2004?",
         "reponse_detaillee": "Die Graber Pulver AG gegründet 1992."
       },
       {
         "id": "150",
-        "question": "In welchem Jahr und was wurde von einigen Schüler der EMF zu Ehren des Funiculaire's gemacht ?",
+        "question": "EMF-Schüler Hommage Funiculaire 2007? Was?",
         "reponse_detaillee": "Im Jahr 2007, ein funktionstüchtiges Modell gebaut."
       },
       {
         "id": "152",
-        "question": "Warum wurde das plateau de Pérolles ausgewählt um das neue EMF Gebäude zu erbauen??",
+        "question": "Warum Plateau Pérolles für neues EMF-Gebäude?",
         "reponse_detaillee": "Um die EMF mit der HEIA-FR und den anderen technischen Schulen zu vereinen."
       },
       {
         "id": "154",
-        "question": "Um wieviel Einwohner stieg die Bevölkerung von Freiburg, in 22 Jahre Industrialisierung ?",
+        "question": "Bevölkerung Freiburg +22 Jahre Industrie (Einwohner)?",
         "reponse_detaillee": "Im 1910 hatte die Stadt Freiburg 8000 zusätliche Einwohner."
       },
       {
         "id": "156",
-        "question": "Was war die Beziehung zwischen dem Amt für Wald und Natur und dem damaligem Technicum ?",
+        "question": "Beziehung Amt Wald-Natur und Technicum?",
         "reponse_detaillee": "Im Jahr 1898 wurden die Schüler zugelassen für das Amt im Bereich Elektrizität zu arbeiten."
       },
       {
         "id": "158",
-        "question": "Was hat der heutige FC Fribourg mit dem ehemaligem Technikum zu tun ?",
+        "question": "Was hat FC Fribourg mit ehem. Technicum zu tun?",
         "reponse_detaillee": "Im 1900, gründeten 9 Studenten den Verein FC Technicum, welcher zum FC Fribourg wurde."
       },
       {
         "id": "160",
-        "question": "Wie viele Praktikumplätze bietet die EMF für Frauen in technischen Berufen an ?",
+        "question": "Praktikumplätze EMF Frauen techn. Berufe?",
         "reponse_detaillee": "Im Jahr 2012, waren es bereits schon 280 Plätze."
       },
       {
         "id": "162",
-        "question": "Seit welchem Jahr gibt es das bilinguale Ausbildungssystem an der EMF ?",
+        "question": "Seit welchem Jahr bilinguale Ausbildung EMF?",
         "reponse_detaillee": "Seit 1995, existiert die bilinguale Ausbildung."
       },
       {
         "id": "164",
-        "question": "Wie hat sich die EMF an die neuen Bedürfnisse der Stadt Freiburg angepasst ?",
+        "question": "Wie EMF an neue Bedürfnisse Stadt angepasst?",
         "reponse_detaillee": "Im Jahr 2000 haben sie neue Ausbildungen im Informatikbereich geschaffen."
       },
       {
         "id": "166",
-        "question": "Wieso spielt die Eisenbahnlinie durch Freiburg eine grosse Rolle für die EMF ?",
+        "question": "Warum Eisenbahnlinie grosse Rolle für EMF?",
         "reponse_detaillee": "Mit Ihr kamen die ersten Industrien in die Stadt und das Interesse für Technik wurde geweckt."
       },
       {
         "id": "168",
-        "question": "In welchem Jahr wurde die Strassenbahnlinie zwischen dem Bahnhof und dem Pérolles eingeweiht ?",
+        "question": "Einweihung Straßenbahnlinie Bahnhof-Pérolles? Jahr?",
         "reponse_detaillee": "Im Jahr 1900, drei Jahre nach der ersten eröffnung."
       },
       {
         "id": "170",
-        "question": "Welche Buslinie hält heute vor der EMF ?",
+        "question": "Welche Buslinie hält heute vor der EMF?",
         "reponse_detaillee": "Die Linie 9"
       },
       {
         "id": "172",
-        "question": "Wieviele Schüler und Schülerinnen transportiert die TPF heute in Freiburg ?",
+        "question": "Schüler täglich transportiert von TPF in Freiburg?",
         "reponse_detaillee": "Die TPF transportiert täglich 16 Tausend Schüler und Schülerinnen mit 73 Buslinien."
       },
       {
         "id": "174",
-        "question": "Wann hatt die Stadt Freiburg entschieden dass das plateau de Pérolles zu ihr gehört ?",
+        "question": "Entscheidung Plateau Pérolles gehört zu Freiburg?",
         "reponse_detaillee": "Am 2.März 1906, um den Konflikt zwischen Villars-sur-Glâne und Freiburg zu lösen."
       },
       {
         "id": "176",
-        "question": "Wozu gehört das Pérolles-Plateau in Fribourg ?",
+        "question": "Wozu gehört das Pérolles-Plateau in Fribourg?",
         "reponse_detaillee": "Seit 100 Jahren zum Herz der technischen Berufsbildung."
       },
       {
         "id": "178",
-        "question": "Bis wann und mit was wurde, die Pérolles Schlucht aufgefüllt ?",
+        "question": "Bis wann Pérolles-Schlucht aufgefüllt? Womit?",
         "reponse_detaillee": "Bis 1952, mit den Abfällen der Stadt."
       }
     ],
     "beruehmte_persoenlichkeiten": [
       {
         "id": "180",
-        "question": "Wie viele Jahre leitete Léon Genoud das Technikum (EMF",
+        "question": "Wie viele Jahre leitete Léon Genoud das Technicum?",
         "reponse_detaillee": "30 Jahre, bis 1925."
       },
       {
         "id": "181",
-        "question": "Wie viele Jahre unterrichtete der Künstler Ferdinand Hodler an der EMF?",
+        "question": "Jahre Ferdinand Hodler Unterricht an EMF?",
         "reponse_detaillee": "3 Jahre (1896-1899)."
       },
       {
         "id": "182",
-        "question": "Welche Position nimmt Edmond Brasey Paul in der chronologischen Liste der Direktoren des Technikum ein?",
+        "question": "Position Edmond Brasey Paul in Direktoren-Liste?",
         "reponse_detaillee": "Er nimmt die 3 Position ein"
       },
       {
         "id": "183",
-        "question": "In welchem Jahr führte Abbé Léon Barbey die Fallfächer an der EMF ein?",
+        "question": "Abbé Barbey führt Fallfächer EMF ein? Jahr?",
         "reponse_detaillee": "Im Jahr 1941"
       },
       {
         "id": "184",
-        "question": "In welchem Jahr hat Jean-Marie Gobet seine Tätigkeit als Direktor der EMF aufgenommen?",
+        "question": "Jean-Marie Gobet Direktor EMF? Jahr?",
         "reponse_detaillee": "Im Jahr 1974"
       },
       {
         "id": "185",
-        "question": "In welchem Jahr fand die Trennung zwischen der EMF und der Ingenieurschule statt?",
+        "question": "Trennung EMF und Ingenieurschule? Jahr?",
         "reponse_detaillee": "Die Trennung fand im Jahr 1987 statt"
       },
       {
         "id": "186",
-        "question": "Welches große Projekt wurde 1991 von den EMF-Studenten abgeschlossen?",
+        "question": "Projekt EMF-Studenten 1991 abgeschlossen?",
         "reponse_detaillee": "Sie schlossen die Entwicklung einer CNC-Metallsäge nach 4 Jahren Arbeit ab"
       },
       {
         "id": "187",
-        "question": "Welches große Unternehmen interessierte sich für die Kapselungsmaschine?",
+        "question": "Unternehmen interessiert Kapselungsmaschine?",
         "reponse_detaillee": "2002 zeigte die NASA Interesse an dieser Maschine."
       },
       {
         "id": "188",
-        "question": "Wie viele verschiedene Getränke wurden vom Robot-Barkeeper der EMF angeboten?",
+        "question": "Getränke vom Robot-Barkeeper EMF?",
         "reponse_detaillee": "Es wurden 40 verschiedene Getränke angeboten."
       },
       {
         "id": "189",
-        "question": "Wer hat das Wasserkraftwerk Pico+ für Entwicklungsländer entwickelt?",
+        "question": "Wer entwickelte Wasserkraftwerk Pico+?",
         "reponse_detaillee": "Es wurde 2006 von den EMF-Studenten und AZ Ingenieurwesen AG entwickelt."
       },
       {
         "id": "190",
-        "question": "Welche Leistung entwickelt die Pico+ (Wasserkraftwerk für Entwicklungsländer)?",
+        "question": "Leistung Pico+ Wasserkraftwerk?",
         "reponse_detaillee": "Die Pico+ entwickelt eine Leistung von 250 Watt."
       },
       {
         "id": "191",
-        "question": "Wie lang sind die Schienen des Projekts „Standseilbahn 2007 ?",
+        "question": "Länge Schienen Projekt Standseilbahn 2007?",
         "reponse_detaillee": "Die Schienen sind 140 cm lang."
       },
       {
         "id": "192",
-        "question": "Wie viel haben die Schüler für den Bau des Modells der Standseilbahn ausgegeben",
+        "question": "Kosten Modellbau Standseilbahn Schüler?",
         "reponse_detaillee": "Sie haben 1000 Franken ausgegeben."
       },
       {
         "id": "193",
-        "question": "Welchen Rang belegte Marc Denervaud 2012 bei den Romands-Meisterschaften in Informatik?",
+        "question": "Rang Marc Denervaud Romands-Meisterschaft Info 2012?",
         "reponse_detaillee": "Marc Denervaud belegte den 1. Platz im Bereich \"Netzwerktechniken\"."
       },
       {
         "id": "194",
-        "question": "Wer belegte den 3. Platz bei den Romands-Meisterschaften im Bereich Applikationsentwicklung?",
+        "question": "3. Platz Romands-Meisterschaft App-Entwicklung?",
         "reponse_detaillee": "Joëlle Perritaz erreichte 2012 den 3. Platz im Bereich \"Applikationsentwicklung\"."
       },
       {
         "id": "195",
-        "question": "In welchem Jahr hat Estelle Leyrolles die Leitung übernommen?",
+        "question": "Estelle Leyrolles übernimmt Leitung? Jahr?",
         "reponse_detaillee": "Im Jahr 2019"
       },
       {
         "id": "196",
-        "question": "Wie lange ist das Wasserstoffauto der dZodZet gefahren?",
+        "question": "Wie lange fuhr Wasserstoffauto dZodZet?",
         "reponse_detaillee": "Es ist 24 Stunden gefahren."
       },
       {
         "id": "197",
-        "question": "In welchem Jahr hat Salih Schmid Kilic alles aufgegeben, um in die Modebranche einzusteigen?",
+        "question": "Salih Schmid Kilic in Modebranche? Jahr?",
         "reponse_detaillee": "2019, im Alter von 34 Jahren, gründete Salih Schmid Kilic die Marke Waldstätten."
       },
       {
         "id": "198",
-        "question": "Wie konnte der Minisatellit die Wolken erreichen?",
+        "question": "Wie Minisatellit erreicht Wolken?",
         "reponse_detaillee": "Er erreichte 1000 m Höhe dank der Wettersondenballons von Meteo Schweiz."
       },
       {
         "id": "199",
-        "question": "Wer gewann die Silbermedaille bei den SwissSkills Championships und in welchem Jahr ?",
+        "question": "Silber SwissSkills Championships? Wer und Jahr?",
         "reponse_detaillee": "Im Jahr 2020 gewann Damien Keller, Elektroniklehrling, den 2. Platz bei den SwissSkills."
       },
       {
         "id": "200",
-        "question": "In welchem Jahr eröffnete François Hemmer eine deutsche Abteilung an der EMF?",
+        "question": "François Hemmer eröffnet deutsche Abteilung EMF? Jahr?",
         "reponse_detaillee": "Im Jahr 1981"
       }
     ]

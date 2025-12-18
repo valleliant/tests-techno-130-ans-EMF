@@ -8,7 +8,9 @@ import { sendQuestionToWled } from '@/lib/wled';
 const QUEUE_KEY = 'questions:queue';
 
 // Configuration
-const DISPLAY_DURATION_MS = 30_000;  // 30 secondes par question
+const DISPLAY_DURATION_MS = 67_000;  // 67 secondes par question (33.5s question + 33.5s réponse)
+const QUESTION_DISPLAY_DURATION_MS = 33_500; // 33.5 secondes pour la question sur WLED
+const ID_DISPLAY_DURATION_MS = 1_000; // 1 seconde pour l'ID sur le display 8 bits (temps de capture)
 const POLL_INTERVAL_MS = 500;        // Vérification de la file toutes les 500ms
 const HEARTBEAT_INTERVAL_MS = 10_000; // Heartbeat toutes les 10s
 
@@ -123,19 +125,33 @@ async function sendIdle(): Promise<void> {
 }
 
 /**
- * Envoie une question aux ESP32.
+ * Envoie la QUESTION au WLED + l'ID au display 8 bits (début : t=0).
+ * L'ID sera envoyé pendant 1 seconde pour que l'ESP32 puisse le capturer.
  */
-async function sendQuestion(entry: QueueEntry): Promise<void> {
-  console.log('[WORKER] ══> Envoi question ID=' + entry.id + ' aux ESP32');
-  
-  const text = entry.reponse_detaillee ?? entry.question;
-  const wledOk = await sendQuestionToWled(text);
-  
+async function sendQuestionText(entry: QueueEntry): Promise<void> {
   const numId = parseInt(entry.id, 10);
   const displayId = isNaN(numId) ? 255 : numId;
+  
+  console.log('[WORKER] ══> Envoi QUESTION ID=' + entry.id + ' au WLED + ID au display 8bits');
+  
+  const wledOk = await sendQuestionToWled(entry.question);
   const displayOk = await sendQuestionIdToDisplay(displayId);
   
   console.log('[WORKER] ══> Résultat: WLED=' + (wledOk ? '✓' : '✗') + ', Display=' + (displayOk ? '✓' : '✗') + ' (ID=' + displayId + ')');
+}
+
+/**
+ * Envoie la RÉPONSE DÉTAILLÉE au WLED uniquement (deuxième phase).
+ * Le display 8 bits reste à 255 (déjà envoyé après 1s).
+ */
+async function sendAnswerText(entry: QueueEntry): Promise<void> {
+  const text = entry.reponse_detaillee ?? entry.question;
+  
+  console.log('[WORKER] ══> Envoi RÉPONSE DÉTAILLÉE ID=' + entry.id + ' au WLED');
+  
+  const wledOk = await sendQuestionToWled(text);
+  
+  console.log('[WORKER] ══> Résultat: WLED=' + (wledOk ? '✓' : '✗'));
 }
 
 /**
@@ -145,7 +161,10 @@ async function workerLoop(instanceId: string): Promise<never> {
   const state = getState();
   let lastHeartbeat = Date.now();
   let currentDisplayedId: string | null = null;
+  let currentEntry: QueueEntry | null = null; // Référence à l'entry actuelle pour envoyer la réponse
   let displayStartTime = 0;
+  let idResetSent = false; // Track si on a déjà renvoyé 255 au display 8 bits
+  let answerSent = false;  // Track si on a déjà envoyé la réponse détaillée au WLED
 
   console.log('[WORKER] ═══════════════════════════════════════════════════');
   console.log('[WORKER] Boucle démarrée - Instance:', instanceId);
@@ -177,7 +196,10 @@ async function workerLoop(instanceId: string): Promise<never> {
           console.log('[WORKER] File vide détectée');
           await sendIdle();
           currentDisplayedId = null;
+          currentEntry = null;
           displayStartTime = 0;
+          idResetSent = false;
+          answerSent = false;
         }
         await sleep(POLL_INTERVAL_MS);
         continue;
@@ -193,17 +215,40 @@ async function workerLoop(instanceId: string): Promise<never> {
         console.log('[WORKER] User: ' + head.entry.userId);
         console.log('[WORKER] ────────────────────────────────────────');
 
-        await sendQuestion(head.entry);
+        await sendQuestionText(head.entry);
         currentDisplayedId = head.entry.id;
+        currentEntry = head.entry; // Garder l'entry pour envoyer la réponse plus tard
         displayStartTime = Date.now();
+        idResetSent = false;  // Reset le flag pour la nouvelle question
+        answerSent = false;   // Reset le flag pour la réponse
 
-        console.log('[WORKER] Countdown 30s démarré');
+        console.log('[WORKER] Countdown 67s démarré (ID: 0-1s, Question: 0-33.5s, Réponse: 33.5-67s)');
+      }
+
+      // ════════════════════════════════════════════════════════════════
+      // CAS 2.5: Après 1 seconde, repasser le display 8 bits à idle (255)
+      // L'ESP32 a eu le temps de capturer l'ID au début
+      // ════════════════════════════════════════════════════════════════
+      const elapsed = Date.now() - displayStartTime;
+      
+      if (!idResetSent && displayStartTime > 0 && elapsed >= ID_DISPLAY_DURATION_MS) {
+        console.log('[WORKER] 1s écoulée, envoi 255 au display 8 bits (ID capturé)');
+        await sendQuestionIdToDisplay(255);
+        idResetSent = true;
+      }
+
+      // ════════════════════════════════════════════════════════════════
+      // CAS 2.6: Après ~33.5 secondes, envoyer la RÉPONSE DÉTAILLÉE au WLED
+      // ════════════════════════════════════════════════════════════════
+      if (!answerSent && currentEntry && displayStartTime > 0 && elapsed >= QUESTION_DISPLAY_DURATION_MS) {
+        console.log('[WORKER] Question terminée, envoi de la RÉPONSE au WLED');
+        await sendAnswerText(currentEntry);
+        answerSent = true;
       }
 
       // ════════════════════════════════════════════════════════════════
       // CAS 3: Question en cours d'affichage
       // ════════════════════════════════════════════════════════════════
-      const elapsed = Date.now() - displayStartTime;
       const remaining = DISPLAY_DURATION_MS - elapsed;
 
       if (remaining <= 0) {
@@ -237,7 +282,10 @@ async function workerLoop(instanceId: string): Promise<never> {
       console.error('[WORKER] ══════════ ERREUR ══════════');
       console.error('[WORKER]', err);
       currentDisplayedId = null;
+      currentEntry = null;
       displayStartTime = 0;
+      idResetSent = false;
+      answerSent = false;
       await sleep(1000);
     }
   }
